@@ -1,6 +1,6 @@
-package com.cinema.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public interface AnswerRepository extends JpaRepository<Answer, Long> {
-}
+//package com.cinema.repository;
+//
+//import org.springframework.data.jpa.repository.JpaRepository;
+//
+//public interface AnswerRepository extends JpaRepository<Answer, Long> {
+//}
