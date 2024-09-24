@@ -11,12 +11,17 @@ import java.time.LocalDate;
 @Getter
 @ToString
 @AllArgsConstructor                 //모든 필드를 인자로 받는 생성자를 자동으로 생성
-@NoArgsConstructor                  //기본 생성자를 자동으로 생성
+@NoArgsConstructor
+@SequenceGenerator(name = "MOVIE_SEQ_GEN", //시퀀스 제네레이터 이름
+        sequenceName = "MOVIE_SEQ", //시퀀스 이름
+        initialValue = 1, //시작값
+        allocationSize = 1 //메모리를 통해 할당할 범위 사이즈
+)
 public class Movie {
 
     @Id                             //해당 필드가 엔티티의 기본 키임을 나타내는 에너테이션
-    @GeneratedValue(strategy = GenerationType.IDENTITY)   //기본 키의 값을 자동으로 생성
-    private int movieNum;                // 영화번호
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOVIE_SEQ_GEN")  //사용할 전략을 시퀀스로 선택, 식별자 생성기를 설정해 놓은 TODO_SEQ_GEN으로 설정
+    private Long movieNum;                // 영화번호
 
     @Column(nullable = false, length = 30)            // NotNull 적용하기 위한 에너테이션
     private String korTitle;             // 한글제목
@@ -69,4 +74,8 @@ public class Movie {
     private String _5roundTime;         // 5회차 상영시간
     @Column(nullable = false)
     private LocalDate regDate;               // 영화등록일
+
+    public void modifykorTitle(String korTitle){
+        this.korTitle = korTitle;
+    }
 }
