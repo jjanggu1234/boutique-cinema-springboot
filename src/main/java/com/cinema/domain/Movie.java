@@ -26,7 +26,7 @@ public class Movie {
     @Column(nullable = false, length = 30)            // NotNull 적용하기 위한 에너테이션
     private String korTitle;             // 한글제목
     @Column(nullable = false, length = 50)
-    private String EnTitle;              // 영문제목
+    private String enTitle;              // 영문제목
     @Column(nullable = false, length = 4000)
     private String movieDesc;            // 영화소개
 
@@ -52,26 +52,26 @@ public class Movie {
     private Integer theaterNum;
     // 상영관번호
     @Column(length = 1)
-    private Integer _1round;            // 1회차 상영  //Integer를 사용한 이유 => int와 같은 기본 타입은 null 값을 가질 수 없기 때문에 자동으로 Notnull 제약조건이 생김
+    private Integer round1;            // 1회차 상영  //Integer를 사용한 이유 => int와 같은 기본 타입은 null 값을 가질 수 없기 때문에 자동으로 Notnull 제약조건이 생김
     @Column(length = 1)
-    private Integer _2round;            // 2회차 상영
+    private Integer round2;            // 2회차 상영
     @Column(length = 1)
-    private Integer _3round;            // 3회차 상영
+    private Integer round3;            // 3회차 상영
     @Column(length = 1)
-    private Integer _4round;            // 4회차 상영
+    private Integer round4;            // 4회차 상영
     @Column(length = 1)
-    private Integer _5round;            // 5회차 상영
+    private Integer round5;            // 5회차 상영
 
-    @Column(nullable = false, length = 10)
-    private String _1roundTime;         // 1회차 상영시간
-    @Column(nullable = false, length = 10)
-    private String _2roundTime;         // 2회차 상영시간
-    @Column(nullable = false, length = 10)
-    private String _3roundTime;         // 3회차 상영시간
-    @Column(nullable = false, length = 10)
-    private String _4roundTime;         // 4회차 상영시간
-    @Column(nullable = false, length = 10)
-    private String _5roundTime;         // 5회차 상영시간
+    @Column(length = 10)
+    private String roundTime1;         // 1회차 상영시간
+    @Column(length = 10)
+    private String roundTime2;         // 2회차 상영시간
+    @Column(length = 10)
+    private String roundTime3;         // 3회차 상영시간
+    @Column(length = 10)
+    private String roundTime4;         // 4회차 상영시간
+    @Column(length = 10)
+    private String roundTime5;         // 5회차 상영시간
     @Column(nullable = false)
     private LocalDate regDate;               // 영화등록일
 
