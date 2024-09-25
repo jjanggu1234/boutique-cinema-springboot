@@ -62,15 +62,15 @@ public class Movie {
     @Column(length = 1)
     private Integer round5;            // 5회차 상영
 
-    @Column(length = 10)
+    @Column(nullable = false, length = 10)
     private String roundTime1;         // 1회차 상영시간
-    @Column(length = 10)
+    @Column(nullable = false,length = 10)
     private String roundTime2;         // 2회차 상영시간
-    @Column(length = 10)
+    @Column(nullable = false,length = 10)
     private String roundTime3;         // 3회차 상영시간
-    @Column(length = 10)
+    @Column(nullable = false,length = 10)
     private String roundTime4;         // 4회차 상영시간
-    @Column(length = 10)
+    @Column(nullable = false,length = 10)
     private String roundTime5;         // 5회차 상영시간
     @Column(nullable = false)
     private LocalDate regDate;               // 영화등록일
