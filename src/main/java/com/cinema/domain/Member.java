@@ -1,9 +1,24 @@
 package com.cinema.domain;
 
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.processing.Pattern;
+
 import java.util.Date;
 
+@Entity
+@Table(name = "MEMBER_TBL")
+@Getter
+@Setter
+@ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Member {
-    private String mId;             // 회원 아이디
+
+    @Id
+    private String mId;             // 회원 아이디  , 기본키
+
     private String mPassword;       // 회원 비밀번호
     private String mBirthday;       // 회원 생년월일
     private String mName;           // 회원 성명
