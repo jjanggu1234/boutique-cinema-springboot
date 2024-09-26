@@ -35,13 +35,38 @@ public class MovieServiceImpl implements MovieService {
         return movieDTO;
     }
 
-    @Override                             //데이터 수정
+    @Override                             // 데이터 수정
     public void modify(MovieDTO movieDTO) {
         Optional<Movie> result = movieRepository.findById(movieDTO.getMovieNum());
         Movie movie = result.orElseThrow();
 
-        movie.modifykorTitle(movieDTO.getKorTitle());
+        // 모든 필드 수정
+        movie.setKorTitle(movieDTO.getKorTitle());
+        movie.setEnTitle(movieDTO.getEnTitle());
+        movie.setMovieDesc(movieDTO.getMovieDesc());
+        movie.setRunTime(movieDTO.getRunTime());
+        movie.setGenre(movieDTO.getGenre());
+        movie.setPosterUrl(movieDTO.getPosterUrl());
+        movie.setTrailerUrl(movieDTO.getTrailerUrl());
+        movie.setDirector(movieDTO.getDirector());
+        movie.setCast(movieDTO.getCast());
+        movie.setRating(movieDTO.getRating());
+        movie.setMovieStartDate(movieDTO.getMovieStartDate());
+        movie.setMovieEndDate(movieDTO.getMovieEndDate());
+        movie.setTheaterNum(movieDTO.getTheaterNum());
+        movie.setRound1(movieDTO.getRound1());
+        movie.setRound2(movieDTO.getRound2());
+        movie.setRound3(movieDTO.getRound3());
+        movie.setRound4(movieDTO.getRound4());
+        movie.setRound5(movieDTO.getRound5());
+        movie.setRoundTime1(movieDTO.getRoundTime1());
+        movie.setRoundTime2(movieDTO.getRoundTime2());
+        movie.setRoundTime3(movieDTO.getRoundTime3());
+        movie.setRoundTime4(movieDTO.getRoundTime4());
+        movie.setRoundTime5(movieDTO.getRoundTime5());
+        movie.setRegDate(movieDTO.getRegDate());
 
+        // 데이터베이스에 저장
         movieRepository.save(movie);
     }
 
