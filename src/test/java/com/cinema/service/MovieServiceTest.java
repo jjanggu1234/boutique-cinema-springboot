@@ -42,9 +42,8 @@ class MovieServiceTest {
     }
 
     @Test                 //데이터 조회
-    public void getTest(){
+    public void ReadTest(){
         Long movieNum = 14L;
         MovieDTO movieDTO = movieService.get(movieNum);
     }
-
 }

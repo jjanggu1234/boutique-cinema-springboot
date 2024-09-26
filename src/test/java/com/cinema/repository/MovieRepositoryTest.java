@@ -58,7 +58,7 @@ class MovieRepositoryTest {
         Long movieNum = 3L;
         java.util.Optional<Movie> result = movieRepository.findById(movieNum);
         Movie movie = result.orElseThrow();
-        movie.modifykorTitle("제목수정2");
+        movie.setKorTitle("제목수정2");
 
         movieRepository.save(movie);
     }

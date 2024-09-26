@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Table(name ="MOVIE_TBL")           //테이블명을 지정함
 @Builder
 @Getter
+@Setter
 @ToString
 @AllArgsConstructor                 //모든 필드를 인자로 받는 생성자를 자동으로 생성
 @NoArgsConstructor
@@ -75,7 +76,4 @@ public class Movie {
     @Column(nullable = false)
     private LocalDate regDate;               // 영화등록일
 
-    public void modifykorTitle(String korTitle){
-        this.korTitle = korTitle;
-    }
 }
