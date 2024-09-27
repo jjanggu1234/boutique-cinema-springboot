@@ -19,7 +19,7 @@ class MovieRepositoryTest {
 
     @Test                        //데이터 입력 테스트
     public void insertTest(){
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 50; i++) {
             Movie movie = Movie.builder()
                     .korTitle("영화제목"+i)
                     .enTitle("영어제목"+i)
@@ -58,8 +58,7 @@ class MovieRepositoryTest {
         Long movieNum = 3L;
         java.util.Optional<Movie> result = movieRepository.findById(movieNum);
         Movie movie = result.orElseThrow();
-        movie.setKorTitle("제목수정2");
-
+        //수정할 내용 작성하여 테스트
         movieRepository.save(movie);
     }
 
@@ -76,4 +75,5 @@ class MovieRepositoryTest {
         Page<Movie> movies = movieRepository.findAll(pageable);
         movies.getContent().stream().forEach(System.out::println);
     }
+
 }

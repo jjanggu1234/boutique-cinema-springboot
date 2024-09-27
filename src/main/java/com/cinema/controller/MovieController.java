@@ -1,9 +1,13 @@
 package com.cinema.controller;
 
 import com.cinema.dto.movie.MovieDTO;
+import com.cinema.repository.MovieRepository;
 import com.cinema.service.MovieService;
 import com.cinema.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,6 +42,28 @@ public class MovieController {
 
         // 성공 메시지 반환
         return Map.of("message", "Movie registered successfully", "movieNum", String.valueOf(movieNum), "fileName", savedFileName);
+    }
+
+    @GetMapping("/{movieNum}")   // 영화 상세 조회
+    public MovieDTO getMovie(@PathVariable Long movieNum) {
+        return movieService.get(movieNum);
+    }
+
+    @GetMapping("/list")         //영화 목록 조회 (전체 목록)
+    public Page<MovieDTO> getMovies(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String searchCondition) {
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        if (searchCondition == null) {
+            // 검색 조건이 없을 경우 모든 영화를 반환
+            return movieService.getfindAll(PageRequest.of(page - 1, size));
+        } else {
+            // 검색 조건이 있을 경우 해당 조건으로 검색
+            return movieService.findByKorTitle(searchCondition, PageRequest.of(page - 1, size));
+        }
     }
 
     @PutMapping("/{movieNum}") // 영화 수정

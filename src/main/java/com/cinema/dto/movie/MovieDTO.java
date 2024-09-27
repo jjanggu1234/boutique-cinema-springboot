@@ -48,13 +48,4 @@ public class MovieDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd")
     private LocalDate regDate;               // 영화등록일
 
-    //MultipartFile의 리스트인 files는 새상품의 등록,수정 작업시 사용자가 새파일 업로드 할때 사용
-    //files는 새롭게 서버에 보내지는 실제 파일 데이터
-    @Builder.Default
-    private String files = "";
-
-    //uploadFileNames는 업로드가 완료된 파일의 이름만 문자열로 보관한 리스트
-    //문자열로 업로드된 결과만 갖고있기때문에 이걸 이용해 DB에 파일 이름을 처리하는 용도로 사용함
-    @Builder.Default
-    private String uploadFileNames = "";
 }
