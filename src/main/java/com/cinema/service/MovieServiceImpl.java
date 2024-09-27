@@ -6,6 +6,8 @@ import com.cinema.repository.MovieRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -23,7 +25,6 @@ public class MovieServiceImpl implements MovieService {
     public Long register(MovieDTO movieDTO) {
         Movie movie = modelMapper.map(movieDTO, Movie.class);
         Movie savedMovie = movieRepository.save(movie);
-
         return savedMovie.getMovieNum();
     }
 
@@ -31,8 +32,7 @@ public class MovieServiceImpl implements MovieService {
     public MovieDTO get(Long movieNum) {
         java.util.Optional<Movie> result = movieRepository.findById(movieNum);
         Movie movie = result.orElseThrow();
-        MovieDTO movieDTO = modelMapper.map(movie, MovieDTO.class);
-        return movieDTO;
+        return modelMapper.map(movie, MovieDTO.class);
     }
 
     @Override                             // 데이터 수정
@@ -41,30 +41,7 @@ public class MovieServiceImpl implements MovieService {
         Movie movie = result.orElseThrow();
 
         // 모든 필드 수정
-        movie.setKorTitle(movieDTO.getKorTitle());
-        movie.setEnTitle(movieDTO.getEnTitle());
-        movie.setMovieDesc(movieDTO.getMovieDesc());
-        movie.setRunTime(movieDTO.getRunTime());
-        movie.setGenre(movieDTO.getGenre());
-        movie.setPosterUrl(movieDTO.getPosterUrl());
-        movie.setTrailerUrl(movieDTO.getTrailerUrl());
-        movie.setDirector(movieDTO.getDirector());
-        movie.setCast(movieDTO.getCast());
-        movie.setRating(movieDTO.getRating());
-        movie.setMovieStartDate(movieDTO.getMovieStartDate());
-        movie.setMovieEndDate(movieDTO.getMovieEndDate());
-        movie.setTheaterNum(movieDTO.getTheaterNum());
-        movie.setRound1(movieDTO.getRound1());
-        movie.setRound2(movieDTO.getRound2());
-        movie.setRound3(movieDTO.getRound3());
-        movie.setRound4(movieDTO.getRound4());
-        movie.setRound5(movieDTO.getRound5());
-        movie.setRoundTime1(movieDTO.getRoundTime1());
-        movie.setRoundTime2(movieDTO.getRoundTime2());
-        movie.setRoundTime3(movieDTO.getRoundTime3());
-        movie.setRoundTime4(movieDTO.getRoundTime4());
-        movie.setRoundTime5(movieDTO.getRoundTime5());
-        movie.setRegDate(movieDTO.getRegDate());
+        modelMapper.map(movieDTO, movie);
 
         // 데이터베이스에 저장
         movieRepository.save(movie);
@@ -73,5 +50,16 @@ public class MovieServiceImpl implements MovieService {
     @Override                           //데이터 삭제
     public void remove(Long movieNum) {
         movieRepository.deleteById(movieNum);
+    }
+
+    @Override                           //전체 목록 조회
+    public Page<MovieDTO> getfindAll(Pageable pageable) {
+        return movieRepository.findAll(pageable).map(movie -> modelMapper.map(movie, MovieDTO.class));
+    }
+
+    @Override                           //제목별 조회
+    public Page<MovieDTO> findByKorTitle(String korTitle, Pageable pageable) {
+        String searchPattern = "%" + korTitle + "%"; // '%검색어%' 형태
+        return movieRepository.findByKorTitle(searchPattern, pageable).map(movie -> modelMapper.map(movie, MovieDTO.class));
     }
 }

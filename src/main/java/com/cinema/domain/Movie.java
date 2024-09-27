@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @Table(name ="MOVIE_TBL")           //테이블명을 지정함
 @Builder
 @Getter
-@Setter
 @ToString
 @AllArgsConstructor                 //모든 필드를 인자로 받는 생성자를 자동으로 생성
 @NoArgsConstructor
@@ -37,7 +36,7 @@ public class Movie {
     private String genre;                // 장르
     @Column(nullable = false, length = 200)
     private String posterUrl;            // 포스터 URL
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String trailerUrl;           // 예고편 URL
     @Column(nullable = false, length = 30)
     private String director;             // 감독
