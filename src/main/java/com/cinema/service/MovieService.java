@@ -3,7 +3,9 @@ package com.cinema.service;
 import com.cinema.dto.movie.MovieDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface MovieService {
     Long register (MovieDTO movieDTO) throws Exception;    // 등록
     MovieDTO get(Long movieNum) throws Exception;          // 상세 조회
