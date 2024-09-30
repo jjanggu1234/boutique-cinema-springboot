@@ -66,6 +66,40 @@ public class MovieController {
         }
     }
 
+    @GetMapping("/list/latest") // 최신순 영화 목록 조회
+    public Page<MovieDTO> getLatestMovies(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return movieService.getMoviesLatestByDate(pageable);
+    }
+
+    @GetMapping("/list/earliest")  // 오래된 순 영화 목록 조회
+    public Page<MovieDTO> getEarliestMovies(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return movieService.getMoviesEarliestByDate(pageable);
+    }
+
+    @GetMapping("/list/theaterNum") // 상영관번호별 영화 목록 조회
+    public Page<MovieDTO> getMoviesByTheater(
+            @RequestParam Integer theaterNum,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        // 상영관 번호 검증 ( 0과 1이 아닐경우 오류 )
+        if (theaterNum < 0 || theaterNum > 1) {
+            return null;
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return movieService.getMoviesByTheaterNum(theaterNum, pageable);
+    }
+
+
     @PutMapping("/{movieNum}") // 영화 수정
     public ResponseEntity<Void> modifyMovie(
             @PathVariable Long movieNum,

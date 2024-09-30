@@ -11,4 +11,7 @@ public interface MovieService {
     void remove(Long movieNum);           // 삭제
     Page<MovieDTO> getfindAll(Pageable pageable); // 목록 조회 (페이징) (전체 목록 조회)
     Page<MovieDTO> findByKorTitle(String korTitle, Pageable pageable);  // 목록 조회 (제목 검색)
+    Page<MovieDTO> getMoviesLatestByDate(Pageable pageable); // 최신순으로 정렬된 목록 조회
+    Page<MovieDTO> getMoviesEarliestByDate(Pageable pageable); // 오래된순으로 정렬된 목록 조회
+    Page<MovieDTO> getMoviesByTheaterNum(Integer theaterNum, Pageable pageable); // 상영관 번호로 조회
 }

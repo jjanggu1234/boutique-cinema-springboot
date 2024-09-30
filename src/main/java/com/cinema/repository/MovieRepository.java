@@ -11,5 +11,15 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     // 검색어 포함 쿼리문 작성
     //@Param 어노테이션을 사용하여 메서드 파라미터와 쿼리 파라미터를 연결
     @Query("SELECT m FROM Movie m WHERE m.korTitle LIKE :korTitle")  // LIKE절에 :korTitle은 입력된 검색어를 대체함
-    Page<Movie> findByKorTitle(@Param("korTitle") String korTitle, Pageable pageable);
+    Page<Movie> findByKorTitle(@Param("korTitle") String korTitle, Pageable pageable);  //페이징 기능 지원
+
+    @Query("SELECT m FROM Movie m ORDER BY m.regDate DESC")  // 개봉일 기준으로 최신순으로 정렬하는 쿼리
+    Page<Movie> findLatestByDate(Pageable pageable);         // 페이징 기능을 지원함
+
+    @Query("SELECT m FROM Movie m ORDER BY m.regDate")  // 개봉일 기준으로 오래된순으로 정렬하는 쿼리
+    Page<Movie> findEarliestByDate(Pageable pageable);  // 페이징 기능 지원
+
+    @Query("SELECT m FROM Movie m WHERE m.theaterNum = :theaterNum ORDER BY m.regDate DESC")  // 프론트에서 전달된 theaterNum을 파라미터로 받아 WHERE절에 세팅하고 최신순으로 정렬함
+    Page<Movie> findByTheaterNum(@Param("theaterNum") Integer theaterNum, Pageable pageable);
+
 }

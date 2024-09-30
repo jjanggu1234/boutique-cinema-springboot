@@ -62,4 +62,19 @@ public class MovieServiceImpl implements MovieService {
         String searchPattern = "%" + korTitle + "%"; // '%검색어%' 형태
         return movieRepository.findByKorTitle(searchPattern, pageable).map(movie -> modelMapper.map(movie, MovieDTO.class));
     }
+
+    @Override                           //최신순 정렬
+    public Page<MovieDTO> getMoviesLatestByDate(Pageable pageable) {
+        return movieRepository.findLatestByDate(pageable).map(movie -> modelMapper.map(movie, MovieDTO.class));
+    }
+
+    @Override                           //오래된 순 정렬
+    public Page<MovieDTO> getMoviesEarliestByDate(Pageable pageable) {
+        return movieRepository.findEarliestByDate(pageable).map(movie -> modelMapper.map(movie, MovieDTO.class));
+    }
+
+    @Override                           //상영관별 정렬
+    public Page<MovieDTO> getMoviesByTheaterNum(Integer theaterNum, Pageable pageable) {
+        return movieRepository.findByTheaterNum(theaterNum, pageable).map(movie -> modelMapper.map(movie, MovieDTO.class));
+    }
 }

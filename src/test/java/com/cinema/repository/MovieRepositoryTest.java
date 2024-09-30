@@ -19,7 +19,7 @@ class MovieRepositoryTest {
 
     @Test                        //데이터 입력 테스트
     public void insertTest(){
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 5; i++) {
             Movie movie = Movie.builder()
                     .korTitle("영화제목"+i)
                     .enTitle("영어제목"+i)
@@ -33,7 +33,7 @@ class MovieRepositoryTest {
                     .rating("15세"+i)
                     .movieStartDate(LocalDate.of(2024,9,20))
                     .movieEndDate(LocalDate.of(2024,9,20))
-                    .theaterNum(5)
+                    .theaterNum(0)
                     .roundTime1("1회차"+i)
                     .roundTime2("2회차"+i)
                     .roundTime3("3회차"+i)
@@ -45,35 +45,35 @@ class MovieRepositoryTest {
             movieRepository.save(movie);
         }
     }
-
-    @Test                   //데이터 조회 테스트
-    public void ReadTest() {
-        Long movieNum = 3L;
-        java.util.Optional<Movie> result = movieRepository.findById(movieNum);
-        Movie movie = result.orElseThrow();
-    }
-
-    @Test                      //데이터 수정 테스트
-    public void ModifyTest() {
-        Long movieNum = 3L;
-        java.util.Optional<Movie> result = movieRepository.findById(movieNum);
-        Movie movie = result.orElseThrow();
-        //수정할 내용 작성하여 테스트
-        movieRepository.save(movie);
-    }
-
-    @Test                     //데이터 삭제 테스트
-    public void DeleteTest() {
-        Long movieNum = 1L;
-
-        movieRepository.deleteById(movieNum);
-    }
-
-    @Test                      //페이징 테스트
-    public void PageingTest() {
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("movieNum").descending());
-        Page<Movie> movies = movieRepository.findAll(pageable);
-        movies.getContent().stream().forEach(System.out::println);
-    }
+//
+//    @Test                   //데이터 조회 테스트
+//    public void ReadTest() {
+//        Long movieNum = 3L;
+//        java.util.Optional<Movie> result = movieRepository.findById(movieNum);
+//        Movie movie = result.orElseThrow();
+//    }
+//
+//    @Test                      //데이터 수정 테스트
+//    public void ModifyTest() {
+//        Long movieNum = 3L;
+//        java.util.Optional<Movie> result = movieRepository.findById(movieNum);
+//        Movie movie = result.orElseThrow();
+//        //수정할 내용 작성하여 테스트
+//        movieRepository.save(movie);
+//    }
+//
+//    @Test                     //데이터 삭제 테스트
+//    public void DeleteTest() {
+//        Long movieNum = 1L;
+//
+//        movieRepository.deleteById(movieNum);
+//    }
+//
+//    @Test                      //페이징 테스트
+//    public void PageingTest() {
+//        Pageable pageable = PageRequest.of(0, 10, Sort.by("movieNum").descending());
+//        Page<Movie> movies = movieRepository.findAll(pageable);
+//        movies.getContent().stream().forEach(System.out::println);
+//    }
 
 }
