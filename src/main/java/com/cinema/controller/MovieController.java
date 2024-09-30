@@ -25,7 +25,7 @@ public class MovieController {
     @PostMapping("/")                  // 영화 등록
     public Map<String, String> register(
             @ModelAttribute MovieDTO movieDTO,
-            @RequestParam(value = "file") MultipartFile file) {
+            @RequestParam(value = "file") MultipartFile file) throws Exception {
 
         // 파일 확장자 검증
         String originalFilename = file.getOriginalFilename();
@@ -45,7 +45,7 @@ public class MovieController {
     }
 
     @GetMapping("/{movieNum}")   // 영화 상세 조회
-    public MovieDTO getMovie(@PathVariable Long movieNum) {
+    public MovieDTO getMovie(@PathVariable Long movieNum) throws Exception {
         return movieService.get(movieNum);
     }
 
@@ -53,7 +53,7 @@ public class MovieController {
     public Page<MovieDTO> getMovies(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String searchCondition) {
+            @RequestParam(required = false) String searchCondition) throws Exception {
 
         Pageable pageable = PageRequest.of(page - 1, size);
 
@@ -69,7 +69,7 @@ public class MovieController {
     @GetMapping("/list/latest") // 최신순 영화 목록 조회
     public Page<MovieDTO> getLatestMovies(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size) throws Exception {
 
         Pageable pageable = PageRequest.of(page - 1, size);
         return movieService.getMoviesLatestByDate(pageable);
@@ -78,7 +78,7 @@ public class MovieController {
     @GetMapping("/list/earliest")  // 오래된 순 영화 목록 조회
     public Page<MovieDTO> getEarliestMovies(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size) throws Exception {
 
         Pageable pageable = PageRequest.of(page - 1, size);
         return movieService.getMoviesEarliestByDate(pageable);
@@ -88,7 +88,7 @@ public class MovieController {
     public Page<MovieDTO> getMoviesByTheater(
             @RequestParam Integer theaterNum,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size) throws Exception {
 
         // 상영관 번호 검증 ( 0과 1이 아닐경우 오류 )
         if (theaterNum < 0 || theaterNum > 1) {
@@ -104,7 +104,7 @@ public class MovieController {
     public ResponseEntity<Void> modifyMovie(
             @PathVariable Long movieNum,
             @ModelAttribute MovieDTO movieDTO,
-            @RequestParam(value = "file", required = false) MultipartFile file) {
+            @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
 
         // 파일 확장자 검증 (업데이트할 파일이 있을 경우)
         if (file != null && !file.isEmpty()) {
@@ -125,7 +125,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/{movieNum}") // 영화 삭제
-    public ResponseEntity<Void> removeMovie(@PathVariable Long movieNum) {
+    public ResponseEntity<Void> removeMovie(@PathVariable Long movieNum) throws Exception {
         movieService.remove(movieNum);
         return ResponseEntity.noContent().build(); // 삭제 성공 응답
     }
