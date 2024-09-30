@@ -49,8 +49,7 @@ public class Movie {
     @Column(nullable = false)
     private LocalDate movieEndDate;           // 상영종료일
     @Column(nullable = false)
-    private Integer theaterNum;
-    // 상영관번호
+    private Integer theaterNum;          // 상영관번호
     @Column(length = 1)
     private Integer round1;            // 1회차 상영  //Integer를 사용한 이유 => int와 같은 기본 타입은 null 값을 가질 수 없기 때문에 자동으로 Notnull 제약조건이 생김
     @Column(length = 1)
