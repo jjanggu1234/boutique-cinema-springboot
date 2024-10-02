@@ -1,4 +1,16 @@
 package com.cinema.service;
 
+import com.cinema.domain.Member;
+import com.cinema.dto.member.MemberJoinDTO;
+import com.cinema.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+
+@Service
 public interface MemberService {
+
+    // 회원 가입 메서드
+    void save(MemberJoinDTO dto);
+
 }
