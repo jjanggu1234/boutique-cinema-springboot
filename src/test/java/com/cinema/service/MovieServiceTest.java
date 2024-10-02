@@ -14,7 +14,7 @@ class MovieServiceTest {
     private MovieService movieService;
 
     @Test                      //데이터 등록
-    public void registerTest(){
+    public void registerTest() throws Exception {
         MovieDTO moiveDTO = MovieDTO.builder()
                 .korTitle("영화제목")
                 .enTitle("영어제목")
@@ -42,7 +42,7 @@ class MovieServiceTest {
     }
 
     @Test                 //데이터 조회
-    public void ReadTest(){
+    public void ReadTest() throws Exception {
         Long movieNum = 14L;
         MovieDTO movieDTO = movieService.get(movieNum);
     }

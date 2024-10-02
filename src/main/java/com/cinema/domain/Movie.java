@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @Table(name ="MOVIE_TBL")           //테이블명을 지정함
 @Builder
 @Getter
-@Setter
 @ToString
 @AllArgsConstructor                 //모든 필드를 인자로 받는 생성자를 자동으로 생성
 @NoArgsConstructor
@@ -37,7 +36,7 @@ public class Movie {
     private String genre;                // 장르
     @Column(nullable = false, length = 200)
     private String posterUrl;            // 포스터 URL
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false, length = 1000)
     private String trailerUrl;           // 예고편 URL
     @Column(nullable = false, length = 30)
     private String director;             // 감독
@@ -50,8 +49,7 @@ public class Movie {
     @Column(nullable = false)
     private LocalDate movieEndDate;           // 상영종료일
     @Column(nullable = false)
-    private Integer theaterNum;
-    // 상영관번호
+    private Integer theaterNum;          // 상영관번호
     @Column(length = 1)
     private Integer round1;            // 1회차 상영  //Integer를 사용한 이유 => int와 같은 기본 타입은 null 값을 가질 수 없기 때문에 자동으로 Notnull 제약조건이 생김
     @Column(length = 1)

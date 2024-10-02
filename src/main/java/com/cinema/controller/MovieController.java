@@ -1,9 +1,13 @@
 package com.cinema.controller;
 
 import com.cinema.dto.movie.MovieDTO;
+import com.cinema.repository.MovieRepository;
 import com.cinema.service.MovieService;
 import com.cinema.util.CustomFileUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +25,7 @@ public class MovieController {
     @PostMapping("/")                  // 영화 등록
     public Map<String, String> register(
             @ModelAttribute MovieDTO movieDTO,
-            @RequestParam(value = "file") MultipartFile file) {
+            @RequestParam(value = "file") MultipartFile file) throws Exception {
 
         // 파일 확장자 검증
         String originalFilename = file.getOriginalFilename();
@@ -40,11 +44,67 @@ public class MovieController {
         return Map.of("message", "Movie registered successfully", "movieNum", String.valueOf(movieNum), "fileName", savedFileName);
     }
 
+    @GetMapping("/{movieNum}")   // 영화 상세 조회
+    public MovieDTO getMovie(@PathVariable Long movieNum) throws Exception {
+        return movieService.get(movieNum);
+    }
+
+    @GetMapping("/list")         //영화 목록 조회 (전체 목록)
+    public Page<MovieDTO> getMovies(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String searchCondition) throws Exception {
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+
+        if (searchCondition == null) {
+            // 검색 조건이 없을 경우 모든 영화를 반환
+            return movieService.getfindAll(PageRequest.of(page - 1, size));
+        } else {
+            // 검색 조건이 있을 경우 해당 조건으로 검색
+            return movieService.findByKorTitle(searchCondition, PageRequest.of(page - 1, size));
+        }
+    }
+
+    @GetMapping("/list/latest") // 최신순 영화 목록 조회
+    public Page<MovieDTO> getLatestMovies(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) throws Exception {
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return movieService.getMoviesLatestByDate(pageable);
+    }
+
+    @GetMapping("/list/earliest")  // 오래된 순 영화 목록 조회
+    public Page<MovieDTO> getEarliestMovies(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) throws Exception {
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return movieService.getMoviesEarliestByDate(pageable);
+    }
+
+    @GetMapping("/list/theaterNum") // 상영관번호별 영화 목록 조회
+    public Page<MovieDTO> getMoviesByTheater(
+            @RequestParam Integer theaterNum,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) throws Exception {
+
+        // 상영관 번호 검증 ( 0과 1이 아닐경우 오류 )
+        if (theaterNum < 0 || theaterNum > 1) {
+            return null;
+        }
+
+        Pageable pageable = PageRequest.of(page - 1, size);
+        return movieService.getMoviesByTheaterNum(theaterNum, pageable);
+    }
+
+
     @PutMapping("/{movieNum}") // 영화 수정
     public ResponseEntity<Void> modifyMovie(
             @PathVariable Long movieNum,
             @ModelAttribute MovieDTO movieDTO,
-            @RequestParam(value = "file", required = false) MultipartFile file) {
+            @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
 
         // 파일 확장자 검증 (업데이트할 파일이 있을 경우)
         if (file != null && !file.isEmpty()) {
@@ -65,7 +125,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/{movieNum}") // 영화 삭제
-    public ResponseEntity<Void> removeMovie(@PathVariable Long movieNum) {
+    public ResponseEntity<Void> removeMovie(@PathVariable Long movieNum) throws Exception {
         movieService.remove(movieNum);
         return ResponseEntity.noContent().build(); // 삭제 성공 응답
     }
