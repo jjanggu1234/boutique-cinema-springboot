@@ -26,11 +26,16 @@ public class MemberController {
 //        memberService.save(dto);   // 회원 가입 메서드 호출
 //    }
 
-      @PostMapping("/joinpage")
-      public ResponseEntity<Member> join(@RequestBody MemberJoinDTO joinDTO) {
+    @PostMapping("/joinpage")
+    public ResponseEntity<Member> join(@RequestBody MemberJoinDTO joinDTO) {
           memberService.save(joinDTO);
           return ResponseEntity.ok().build();
-      }
+    }
 
+    @GetMapping("/check-id")
+    public ResponseEntity<Boolean> checkId(String id) {
+        boolean isAvailable = memberService.findById(id);
+        return ResponseEntity.ok(isAvailable);
+    }
 
 }
