@@ -1,10 +1,39 @@
 package com.cinema.domain;
 
-import java.util.Date;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
+
+
+@Entity
+@SequenceGenerator(name ="NOTICE_SEQ_GEN",
+                  sequenceName = "NOTICE_SEQ",
+          initialValue = 1,
+          allocationSize = 1)
+@Table(name="NOTICE_TBL")
+@Getter
+@ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Notice {
-    private int nNum;           // 공지사항 번호
-    private String nTitle;      // 공지사항 제목
-    private String nContent;    // 공지사항 내용
-    private Date nDate;         // 공지사항 등록일
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "NOTICE_SEQ_GEN")
+    private Long nNum;
+
+    private String nTitle;
+    private String nContent;
+    private LocalDate nDate;
+
+    public void changeNTitle(String nTitle) {
+        this.nTitle = nTitle;
+    }
+    public void changeNContent(String nContent) {
+        this.nContent = nContent;
+    }
+    public void changNDate(LocalDate nDate) {
+        this.nDate = nDate;
+    }
 }
