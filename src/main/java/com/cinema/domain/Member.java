@@ -67,9 +67,9 @@ public class Member {
                 .name(dto.getName())
                 .birth(dto.getBirth())
                 .phone(dto.getPhone())
-                .years14More(dto.getYears_14_more())
-                .useTermsAgree(dto.getUse_terms_agree())
-                .personalInfoAgree(dto.getPersonal_info_agree())
+                .years14More(dto.getYears14More())
+                .useTermsAgree(dto.getUseTermsAgree())
+                .personalInfoAgree(dto.getPersonalInfoAgree())
                 .joinDate(formattedDate) // 현재 시간으로 설정
                 .build();
     }
