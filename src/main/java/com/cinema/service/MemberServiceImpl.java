@@ -33,9 +33,9 @@ public class MemberServiceImpl  implements MemberService{
                 .name(dto.getName())
                 .birth(dto.getBirth())
                 .phone(dto.getPhone())
-                .years_14_more(dto.getYears_14_more())
-                .use_terms_agree(dto.getUse_terms_agree())
-                .personal_info_agree(dto.getPersonal_info_agree())
+                .years14More(dto.getYears_14_more())
+                .useTermsAgree(dto.getUse_terms_agree())
+                .personalInfoAgree(dto.getPersonal_info_agree())
                 .joinDate(formattedDate)
                 .build();
 
