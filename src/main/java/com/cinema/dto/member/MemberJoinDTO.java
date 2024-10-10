@@ -27,10 +27,7 @@ public class MemberJoinDTO {
     private int use_terms_agree;
     private int personal_info_agree;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date joinDate;
-//    private int is_treated;
-//    private int is_deleted;
 
     public Member toEntity() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");

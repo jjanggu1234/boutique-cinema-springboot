@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 @Service
 public class MemberServiceImpl  implements MemberService{
@@ -40,6 +41,12 @@ public class MemberServiceImpl  implements MemberService{
 
         memberRepository.save(member); // Member 객체 저장
 
+    }
+
+    // 아이디 중복 체크 메서드
+    public boolean findById(String id) {
+        Optional<Member> member = memberRepository.findById(id);
+        return member.isEmpty(); // 존재하지 않으면 true, 존재하면 false
     }
 
 
