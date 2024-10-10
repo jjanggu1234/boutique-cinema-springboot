@@ -1,8 +1,19 @@
 package com.cinema.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Date;
 
+@Entity
 public class Reservation {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String rNum;            // 영화예매번호
     private String seatNum;         // 영화예매 좌석번호
     private int paymentAmount;      // 영화예매 결제금액
