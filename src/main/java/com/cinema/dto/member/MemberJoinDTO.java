@@ -23,9 +23,9 @@ public class MemberJoinDTO {
     private String name;
     private String birth;
     private String phone;
-    private int years_14_more;
-    private int use_terms_agree;
-    private int personal_info_agree;
+    private int years14More;
+    private int useTermsAgree;
+    private int personalInfoAgree;
 
     private Date joinDate;
 
@@ -39,9 +39,9 @@ public class MemberJoinDTO {
                 .name(name)
                 .birth(birth)
                 .phone(phone)
-                .years_14_more(years_14_more)
-                .use_terms_agree(use_terms_agree)
-                .personal_info_agree(personal_info_agree)
+                .years14More(years14More)
+                .useTermsAgree(useTermsAgree)
+                .personalInfoAgree(personalInfoAgree)
                 .joinDate(formattedDate)
                 .build();
     }
