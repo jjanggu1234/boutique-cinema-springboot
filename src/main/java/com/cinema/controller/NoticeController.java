@@ -2,6 +2,7 @@ package com.cinema.controller;
 
 
 
+import com.cinema.dto.common.PageRequestDTO;
 import com.cinema.dto.movie.NoticeDTO;
 import com.cinema.service.NoticeService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoticeController {
 
-     private final NoticeService noticeService;
+    private final NoticeService noticeService;
 
     // 공지사항 등록
     @PostMapping
@@ -25,7 +26,16 @@ public class NoticeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedId);
     }
 
-    // 공지사항 조회
+    //전체 공지사항 조회
+    @GetMapping
+    public ResponseEntity<List<NoticeDTO>> getAllNotices(@RequestParam(defaultValue = "1") int page,
+                                                         @RequestParam(defaultValue = "10") int size) {
+        PageRequestDTO pageRequestDTO = new PageRequestDTO(page, size);
+        List<NoticeDTO> notices = noticeService.getAllNotices(pageRequestDTO);
+        return ResponseEntity.ok(notices);
+    }
+
+    // 특정 공지사항 조회
     @GetMapping("/{nNum}")
     public ResponseEntity<NoticeDTO> getNotice(@PathVariable Long nNum) {
         NoticeDTO noticeDTO = noticeService.get(nNum);
