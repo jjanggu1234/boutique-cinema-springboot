@@ -1,6 +1,7 @@
 package com.cinema.service;
 
 import com.cinema.domain.Member;
+import com.cinema.dto.member.AdminMemberListDTO;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.repository.MemberRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceImpl  implements MemberService{
@@ -49,6 +52,35 @@ public class MemberServiceImpl  implements MemberService{
         return member.isEmpty(); // 존재하지 않으면 true, 존재하면 false
     }
 
+    // 공통 변환 로직 추출
+    private AdminMemberListDTO convertToDTO(Member member) {
+        return AdminMemberListDTO.builder()  // 빌더를 사용하여 생성
+                .id(member.getId())
+                .name(member.getName())
+                .birth(member.getBirth())
+                .phone(member.getPhone())
+                .email(member.getEmail())
+                .joinDate(member.getJoinDate())
+                .isDeleted(member.getIsDeleted())
+                .isTreated(member.getIsTreated())
+                .build(); // 빌더를 통해 객체 생성
+    }
 
+    // 전체 회원 목록 조회
+    @Override
+    public List<AdminMemberListDTO> getAllMembers() {
+        return memberRepository.findAll()
+                .stream()
+                .map(this::convertToDTO)  // 공통 메서드 사용
+                .collect(Collectors.toList());
+    }
 
+    // 검색 기능 구현 (이름 또는 이메일로 검색)
+    @Override
+    public List<AdminMemberListDTO> searchMembers(String keyword) {
+        return memberRepository.findByNameContainingOrIdContaining(keyword, keyword)
+                .stream()
+                .map(this::convertToDTO)  // 공통 메서드 사용
+                .collect(Collectors.toList());
+    }
 }
