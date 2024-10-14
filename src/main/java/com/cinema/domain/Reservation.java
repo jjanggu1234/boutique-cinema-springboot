@@ -5,11 +5,15 @@ import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "movie_reservation_tbl")
 @Getter
-@ToString
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,16 +28,18 @@ public class Reservation {
   @Column(nullable = false)
   private int paymentAmount; // 영화예매 결제금액
 
-  @Column(nullable = false)
+  @CreatedDate
+  @Column(updatable = false, insertable = true)
   private LocalDateTime rDate; // 영화예매일자
 
-  @Column(nullable = true, length = 1)
+  @Column(length = 1)
   private Integer isCanceled; // 영화예매 취소여부
 
-  @Column(nullable = true)
+  @LastModifiedDate
+  @Column(updatable = true, insertable = false)
   private LocalDateTime cancelDate; // 영화예매 취소일자
 
-  @Column(nullable = true, length = 500)
+  @Column(length = 500)
   private String reviewContent; // 관람후기내용
 
   @Column(precision = 3, scale = 1)
@@ -67,6 +73,14 @@ public class Reservation {
   private int rPersonPrice6; // 예매인원6 가격
 
   @ManyToOne
-  @JoinColumn(name = "movie_num") // fk 역할
+  @JoinColumn(name = "movie_num", nullable = false) // fk 역할
   private Movie movie;
+
+  public void changeCancel(Integer isCanceled) {
+    this.isCanceled = isCanceled;
+  }
+
+  public void changeCancelDate(LocalDateTime cancelDate) {
+    this.cancelDate = cancelDate;
+  }
 }
