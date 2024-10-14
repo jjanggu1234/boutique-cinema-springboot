@@ -23,14 +23,11 @@ public class MemberJoinDTO {
     private String name;
     private String birth;
     private String phone;
-    private int years_14_more;
-    private int use_terms_agree;
-    private int personal_info_agree;
+    private int years14More;
+    private int useTermsAgree;
+    private int personalInfoAgree;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date joinDate;
-//    private int is_treated;
-//    private int is_deleted;
 
     public Member toEntity() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
@@ -42,9 +39,9 @@ public class MemberJoinDTO {
                 .name(name)
                 .birth(birth)
                 .phone(phone)
-                .years_14_more(years_14_more)
-                .use_terms_agree(use_terms_agree)
-                .personal_info_agree(personal_info_agree)
+                .years14More(years14More)
+                .useTermsAgree(useTermsAgree)
+                .personalInfoAgree(personalInfoAgree)
                 .joinDate(formattedDate)
                 .build();
     }
