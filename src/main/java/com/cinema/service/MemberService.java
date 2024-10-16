@@ -14,4 +14,5 @@ public interface MemberService {
     void save(MemberJoinDTO dto);
     // 아이디 중복체크 메서드
     boolean findById(String id);
+
 }

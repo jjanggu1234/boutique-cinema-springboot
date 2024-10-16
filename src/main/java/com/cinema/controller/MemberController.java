@@ -1,32 +1,22 @@
 package com.cinema.controller;
 
 import com.cinema.domain.Member;
-import com.cinema.dto.member.MemberDTO;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("api/member")
 public class MemberController {
 
     private final MemberService memberService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-//    @PostMapping("/joinPage")
-//    public void register(@RequestBody MemberJoinDTO dto) {
-//        memberService.save(dto);   // 회원 가입 메서드 호출
-//    }
-
-    @PostMapping("/joinpage")
+    @PostMapping("joinpage")
     public ResponseEntity<Member> join(@RequestBody MemberJoinDTO joinDTO) {
           memberService.save(joinDTO);
           return ResponseEntity.ok().build();

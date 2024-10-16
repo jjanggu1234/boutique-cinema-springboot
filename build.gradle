@@ -35,8 +35,8 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:3.1.0'
     implementation 'net.coobird:thumbnailator:0.4.14'
     implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티를 사용하기 위한 스타터 추가
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6' // 타임리프에ㅓ 스프링 시큐리티를 사용하기 위해 추가
     testImplementation 'org.springframework.security:spring-security-test' // 스프링 시큐리티를 테스트하기 위한 의존성 추가
+    implementation 'com.google.code.gson:gson:2.10.1'       // jwt를 위한 gson 의존성
 }
 
 tasks.named('test') {

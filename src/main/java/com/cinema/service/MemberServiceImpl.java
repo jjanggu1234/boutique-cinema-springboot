@@ -1,18 +1,18 @@
 package com.cinema.service;
 
 import com.cinema.domain.Member;
+import com.cinema.domain.MemberRole;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
-public class MemberServiceImpl  implements MemberService{
+public class MemberServiceImpl  implements MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -23,8 +23,9 @@ public class MemberServiceImpl  implements MemberService{
     }
 
     // 저장 메서드
+    @Transactional
     public void save(MemberJoinDTO dto) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd");
         String formattedDate = LocalDate.now().format(formatter); // 오늘 날짜 포맷팅
         Member member = Member.builder()
                 .id(dto.getId())
@@ -39,6 +40,12 @@ public class MemberServiceImpl  implements MemberService{
                 .joinDate(formattedDate)
                 .build();
 
+        if ("admin".equals(dto.getId())) {
+            member.addRole(MemberRole.ADMIN);
+        } else {
+            member.addRole(MemberRole.USER);
+        }
+
         memberRepository.save(member); // Member 객체 저장
 
     }
@@ -49,6 +56,5 @@ public class MemberServiceImpl  implements MemberService{
         return member.isEmpty(); // 존재하지 않으면 true, 존재하면 false
     }
 
-
-
 }
+
