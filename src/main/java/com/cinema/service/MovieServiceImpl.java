@@ -81,14 +81,6 @@ public class MovieServiceImpl implements MovieService {
         .map(movie -> modelMapper.map(movie, MovieDTO.class));
   }
 
-  @Override // 상영관별 정렬
-  public Page<MovieDTO> getMoviesByTheaterNum(Integer theaterNum, Pageable pageable)
-      throws Exception {
-    return movieRepository
-        .findByTheaterNum(theaterNum, pageable)
-        .map(movie -> modelMapper.map(movie, MovieDTO.class));
-  }
-
   @Override
   public List<MovieDTO> getMoviesByDate(LocalDate targetDate) throws Exception {
     List<Movie> movies = movieRepository.findMoviesByDate(targetDate);
