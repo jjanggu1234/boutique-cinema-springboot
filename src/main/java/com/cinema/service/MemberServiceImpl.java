@@ -45,9 +45,7 @@ public class MemberServiceImpl  implements MemberService {
         } else {
             member.addRole(MemberRole.USER);
         }
-
         memberRepository.save(member); // Member 객체 저장
-
     }
 
     // 아이디 중복 체크 메서드
@@ -55,6 +53,4 @@ public class MemberServiceImpl  implements MemberService {
         Optional<Member> member = memberRepository.findById(id);
         return member.isEmpty(); // 존재하지 않으면 true, 존재하면 false
     }
-
 }
-

@@ -43,7 +43,7 @@ public class MemberRepositoryTest {
 
                 member.addRole(MemberRole.USER);
 
-//        Member member = Member.builder()                                  // 관리가 계정 임의추가
+//        Member member = Member.builder()                                  // 관리자 계정 임의추가
 //                .id("admin")
 //                .password(passwordEncoder.encode("1234"))
 //                .email("qscft9898@gmail.com")
