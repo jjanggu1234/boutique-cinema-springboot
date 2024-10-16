@@ -4,10 +4,11 @@ import com.cinema.dto.member.MemberJoinDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "MEMBER_TBL")
 @Builder
@@ -15,7 +16,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Member {
+@ToString(exclude = "memberRoleList")
+public class Member  {
 
     @Id
     @Column(name = "M_ID", length = 20)
@@ -56,6 +58,17 @@ public class Member {
     @Builder.Default
     private Integer isDeleted = 0;     // 탈퇴여부
 
+    @ElementCollection(fetch = FetchType.LAZY)      // 사용자 , 관리자 식별
+    @Builder.Default
+    private List<MemberRole> memberRoleList = new ArrayList<>();
+
+    public void addRole(MemberRole memberRole) {
+        memberRoleList.add(memberRole);
+    }
+    public void clearRole() {
+        memberRoleList.clear();
+    }
+
     // 회원 가입 시 joinDate를 현재 시간으로 설정하는 메서드
     public static Member createMember(MemberJoinDTO dto) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -73,4 +86,5 @@ public class Member {
                 .joinDate(formattedDate) // 현재 시간으로 설정
                 .build();
     }
+
 }

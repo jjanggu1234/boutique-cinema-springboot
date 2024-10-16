@@ -1,14 +1,20 @@
 package com.cinema.repository;
 
 import com.cinema.domain.Member;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
                                                                 // pk타입(mId) String
 public interface MemberRepository extends JpaRepository<Member, String> {
+    Optional<Member> findById(String id);
 
-    // 이름 또는 아이디에 키워드가 포함된 회원 검색
-    List<Member> findByNameContainingOrIdContaining(String name, String id);
-                                                                }
+    @EntityGraph(attributePaths = {"memberRoleList"})
+    @Query("select m from Member m where m.id = :id")
+    Member getWithRoles(@Param("id") String id);
+}
+
+
