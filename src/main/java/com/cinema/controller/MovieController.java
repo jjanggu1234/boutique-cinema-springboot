@@ -6,7 +6,6 @@ import com.cinema.util.CustomFileUtil;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -24,7 +23,7 @@ public class MovieController {
   private final CustomFileUtil fileUtil;
   private final MovieService movieService;
 
-  @PostMapping("/") // 영화 등록
+  @PostMapping // 영화 등록
   public Map<String, String> register(
       @ModelAttribute MovieDTO movieDTO, @RequestParam(value = "file") MultipartFile file)
       throws Exception {
@@ -128,7 +127,6 @@ public class MovieController {
   public ResponseEntity<Resource> viewFileget(@PathVariable String posterUrl) throws Exception {
     return fileUtil.getFile(posterUrl);
   }
-
 
   private boolean isValidImageFile(String filename) { // 파일 형식을 검증하는 메소드
     String lowerCaseName = filename.toLowerCase();
