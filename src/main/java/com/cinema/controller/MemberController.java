@@ -5,6 +5,7 @@ import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,5 +28,8 @@ public class MemberController {
         boolean isAvailable = memberService.findById(id);
         return ResponseEntity.ok(isAvailable);
     }
+
+//    @PreAuthorize("hasAnyRole('USER', 'ROLE_ADMIN')")   // 임시 권한 설정
+//    /admin  url은 admin 권한이 있는 사람만 접근 가능하게 허용
 
 }

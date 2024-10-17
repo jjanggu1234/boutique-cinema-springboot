@@ -38,6 +38,9 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test' // 스프링 시큐리티를 테스트하기 위한 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-validation' // 유효성 검사 애노테이션 의존성 추가(ex:@Email, @Pattern)
     implementation 'com.google.code.gson:gson:2.10.1'       // jwt를 위한 gson 의존성
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'        // jwt
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'       // jwt
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON 처리 라이브러리 (Jackson)
 }
 
 tasks.named('test') {
