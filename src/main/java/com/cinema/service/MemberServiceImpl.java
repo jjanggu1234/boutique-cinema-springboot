@@ -1,21 +1,18 @@
 package com.cinema.service;
 
 import com.cinema.domain.Member;
-import com.cinema.dto.member.AdminMemberListDTO;
+import com.cinema.domain.MemberRole;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class MemberServiceImpl  implements MemberService{
+public class MemberServiceImpl  implements MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -26,8 +23,9 @@ public class MemberServiceImpl  implements MemberService{
     }
 
     // 저장 메서드
+    @Transactional
     public void save(MemberJoinDTO dto) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd");
         String formattedDate = LocalDate.now().format(formatter); // 오늘 날짜 포맷팅
         Member member = Member.builder()
                 .id(dto.getId())
@@ -42,45 +40,17 @@ public class MemberServiceImpl  implements MemberService{
                 .joinDate(formattedDate)
                 .build();
 
+        if ("admin".equals(dto.getId())) {
+            member.addRole(MemberRole.ADMIN);
+        } else {
+            member.addRole(MemberRole.USER);
+        }
         memberRepository.save(member); // Member 객체 저장
-
     }
 
     // 아이디 중복 체크 메서드
     public boolean findById(String id) {
         Optional<Member> member = memberRepository.findById(id);
         return member.isEmpty(); // 존재하지 않으면 true, 존재하면 false
-    }
-
-    // 공통 변환 로직 추출
-    private AdminMemberListDTO convertToDTO(Member member) {
-        return AdminMemberListDTO.builder()  // 빌더를 사용하여 생성
-                .id(member.getId())
-                .name(member.getName())
-                .birth(member.getBirth())
-                .phone(member.getPhone())
-                .email(member.getEmail())
-                .joinDate(member.getJoinDate())
-                .isDeleted(member.getIsDeleted())
-                .isTreated(member.getIsTreated())
-                .build(); // 빌더를 통해 객체 생성
-    }
-
-    // 전체 회원 목록 조회
-    @Override
-    public List<AdminMemberListDTO> getAllMembers() {
-        return memberRepository.findAll()
-                .stream()
-                .map(this::convertToDTO)  // 공통 메서드 사용
-                .collect(Collectors.toList());
-    }
-
-    // 검색 기능 구현 (이름 또는 이메일로 검색)
-    @Override
-    public List<AdminMemberListDTO> searchMembers(String keyword) {
-        return memberRepository.findByNameContainingOrIdContaining(keyword, keyword)
-                .stream()
-                .map(this::convertToDTO)  // 공통 메서드 사용
-                .collect(Collectors.toList());
     }
 }
