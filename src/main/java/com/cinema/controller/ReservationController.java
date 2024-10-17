@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReservationController {
   private final ReservationService reservationService;
 
-  @PostMapping("/")
+  @PostMapping
   public ResponseEntity<ReservationDTO> createReservation(ReservationDTO reservationDTO)
       throws Exception {
     // 예약 생성
@@ -25,9 +25,4 @@ public class ReservationController {
 
     return new ResponseEntity<>(createdReservationDTO, HttpStatus.CREATED);
   }
-
-  //  @PostMapping("/")
-  //  public void createReservation(@RequestBody ReservationDTO reservationDTO) {
-  //    log.info("reservationDTO : {}", reservationDTO);
-  //  }
 }

@@ -22,6 +22,12 @@ public class Reservation {
   @Size(min = 12)
   private String rNum; // 영화예매번호
 
+  @Column(nullable = false, length = 1)
+  private Integer theaterNum; // 영화예매 상영관 번호
+
+  @Column(nullable = false, length = 1)
+  private Integer roundNum; // 영화예매 상영회차 번호
+
   @Column(nullable = false, length = 3)
   private String seatNum; // 영화예매 좌석번호
 
@@ -71,6 +77,24 @@ public class Reservation {
   private int rPersonPrice4; // 예매인원4 가격
   private int rPersonPrice5; // 예매인원5 가격
   private int rPersonPrice6; // 예매인원6 가격
+
+  @Column(length = 3, nullable = false, unique = true)
+  private String seatNum1; // 좌석번호1
+
+  @Column(length = 3, unique = true)
+  private String seatNum2; // 좌석번호2
+
+  @Column(length = 3, unique = true)
+  private String seatNum3; // 좌석번호3
+
+  @Column(length = 3, unique = true)
+  private String seatNum4; // 좌석번호4
+
+  @Column(length = 3, unique = true)
+  private String seatNum5; // 좌석번호5
+
+  @Column(length = 3, unique = true)
+  private String seatNum6; // 좌석번호6
 
   @ManyToOne
   @JoinColumn(name = "movie_num", nullable = false) // fk 역할

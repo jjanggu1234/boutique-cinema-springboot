@@ -16,6 +16,14 @@ public class ReservationDTO {
   private String rNum; // 영화예매번호
 
   @NotNull
+  @Size(min = 1, max = 1, message = "상영관 번호는 0,1 둘 중 하나의 값만 가질 수 있습니다.")
+  private Integer theaterNum; // 영화예매 상영관 번호
+
+  @NotNull
+  @Size(min = 1, max = 1, message = "상영회차 번호는 0,1 둘 중 하나의 값만 가질 수 있습니다.")
+  private Integer roundNum; // 영화예매 상영회차 번호
+
+  @NotNull
   @Size(max = 3, message = "좌석 번호는 최대 3자까지 입력할 수 있습니다.")
   private String seatNum; // 영화예매 좌석번호
 
@@ -61,6 +69,25 @@ public class ReservationDTO {
   private int rPersonPrice4; // 예매인원4 가격
   private int rPersonPrice5; // 예매인원5 가격
   private int rPersonPrice6; // 예매인원6 가격
+
+  @NotNull
+  @Size(max = 3, message = "좌석번호는 최대 3자까지 입력할 수 있습니다.")
+  private String seatNum1; // 좌석번호1
+
+  @Size(max = 3)
+  private String seatNum2; // 좌석번호2
+
+  @Size(max = 3)
+  private String seatNum3; // 좌석번호3
+
+  @Size(max = 3)
+  private String seatNum4; // 좌석번호4
+
+  @Size(max = 3)
+  private String seatNum5; // 좌석번호5
+
+  @Size(max = 3)
+  private String seatNum6; // 좌석번호6
 
   @NotNull private Long movieNum; // 영화번호 (외래키)
 }
