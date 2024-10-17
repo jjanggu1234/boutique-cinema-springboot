@@ -3,10 +3,10 @@ package com.cinema.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -28,21 +28,19 @@ public class Reservation {
   @Column(nullable = false, length = 1)
   private Integer roundNum; // 영화예매 상영회차 번호
 
-  @Column(nullable = false, length = 3)
-  private String seatNum; // 영화예매 좌석번호
-
   @Column(nullable = false)
   private int paymentAmount; // 영화예매 결제금액
 
+  @Column(nullable = false)
+  private LocalDate reserveDate; // 영화예매날짜
+
   @CreatedDate
   @Column(updatable = false, insertable = true)
-  private LocalDateTime rDate; // 영화예매일자
+  private LocalDateTime regDate; // 예매 등록일
 
   @Column(length = 1)
   private Integer isCanceled; // 영화예매 취소여부
 
-  @LastModifiedDate
-  @Column(updatable = true, insertable = false)
   private LocalDateTime cancelDate; // 영화예매 취소일자
 
   @Column(length = 500)
@@ -97,7 +95,11 @@ public class Reservation {
   private String seatNum6; // 좌석번호6
 
   @ManyToOne
-  @JoinColumn(name = "movie_num", nullable = false) // fk 역할
+  @JoinColumn(name = "m_id", nullable = false) // 회원 아이디 fk
+  private Member member;
+
+  @ManyToOne
+  @JoinColumn(name = "movie_num", nullable = false) // 영화번호 fk
   private Movie movie;
 
   public void changeCancel(Integer isCanceled) {

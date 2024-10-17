@@ -2,6 +2,8 @@ package com.cinema.dto.reservation;
 
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.*;
 
 @Getter
@@ -24,14 +26,16 @@ public class ReservationDTO {
   private Integer roundNum; // 영화예매 상영회차 번호
 
   @NotNull
-  @Size(max = 3, message = "좌석 번호는 최대 3자까지 입력할 수 있습니다.")
-  private String seatNum; // 영화예매 좌석번호
-
-  @NotNull
   @Min(value = 0, message = "결제 금액은 0 이상이어야 합니다.")
   private int paymentAmount; // 영화예매 결제금액
 
+  @NotNull private LocalDate reserveDate; // 영화예매날짜
+
+  private LocalDateTime regDate; // 예매 등록일
+
   private Integer isCanceled; // 영화예매 취소여부 (0: false, 1: true)
+
+  private LocalDateTime cancelDate; // 영화예매 취소날짜
 
   @Size(max = 500, message = "관람 후기는 최대 500자까지 입력할 수 있습니다.")
   private String reviewContent; // 관람후기내용
@@ -88,6 +92,8 @@ public class ReservationDTO {
 
   @Size(max = 3)
   private String seatNum6; // 좌석번호6
+
+  @NotNull private String mId; // 회원아이디 (외래키)
 
   @NotNull private Long movieNum; // 영화번호 (외래키)
 }
