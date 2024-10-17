@@ -37,6 +37,22 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public List<NoticeDTO> getAllNotices(PageRequestDTO pageRequestDTO) {
+        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() - 1, pageRequestDTO.getSize());
+        List<Notice> notices = noticeRepository.findAll(pageable).getContent();
+
+        return notices.stream()
+                .map(notice -> NoticeDTO.builder()
+                        .nNum(notice.getNNum())
+                        .nTitle(notice.getNTitle())
+                        .nContent(notice.getNContent())
+                        .nDate(notice.getNDate())
+                        .build())
+                .toList();
+    }
+
+
+    @Override
     public NoticeDTO get(Long nNum) {
         Notice notice = noticeRepository.findById(nNum).orElse(null);
         if (notice != null) {
@@ -52,15 +68,15 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public void modify(NoticeDTO noticeDTO) {
-        Notice notice = noticeRepository.findById(noticeDTO.getNNum()).orElse(null);
-        if (notice == null) {
-            throw new RuntimeException("Notice not found"); // 예외 처리 추가
-        }
+        Notice notice = noticeRepository.findById(noticeDTO.getNNum()).orElseThrow(() ->
+                new RuntimeException("Notice not found")); // Optional 처리
+
+        // Notice 엔티티의 필드 값 변경
         notice.changeNTitle(noticeDTO.getNTitle());
         notice.changeNContent(noticeDTO.getNContent());
-        notice.changNDate(noticeDTO.getNDate());
+        notice.changeNDate(noticeDTO.getNDate());
 
-        noticeRepository.save(notice);
+        // save() 호출 없이 트랜잭션이 끝나면 자동으로 변경 사항이 반영됩니다.
     }
 
     @Override
@@ -68,21 +84,5 @@ public class NoticeServiceImpl implements NoticeService {
         noticeRepository.deleteById(nNum);
     }
 
-    @Override
-    public PageResponseDTO<NoticeDTO>getNotices(PageRequestDTO pageRequestDTO) {
-        Pageable pageable = PageRequest.of(pageRequestDTO.getPage() -1 , pageRequestDTO.getSize());
-        Page<Notice> result = noticeRepository.findAll(pageable);
-
-        List<NoticeDTO> noticeDTO = result.getContent().stream()
-                .map( notice -> NoticeDTO.builder()
-                        .nNum(notice.getNNum())
-                        .nTitle(notice.getNTitle())
-                        .nContent(notice.getNContent())
-                        .nDate(notice.getNDate())
-                        .build())
-                .toList();
-        return new PageResponseDTO<>(
-                noticeDTO, result.getTotalElements(),pageRequestDTO.getPage(),pageRequestDTO.getSize());
-    }
 }
 
