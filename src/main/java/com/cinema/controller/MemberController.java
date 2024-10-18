@@ -4,8 +4,10 @@ import com.cinema.domain.Member;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +31,13 @@ public class MemberController {
         return ResponseEntity.ok(isAvailable);
     }
 
-//    @PreAuthorize("hasAnyRole('USER', 'ROLE_ADMIN')")   // 임시 권한 설정
-//    /admin  url은 admin 권한이 있는 사람만 접근 가능하게 허용
+   @GetMapping("/list")
+public ResponseEntity<Page<Member>> getAllMembers(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Member> members = memberService.findAllMembers(pageable);
+    return ResponseEntity.ok(members);
+ }
 
 }

@@ -26,7 +26,6 @@ public class NoticeServiceImpl implements NoticeService {
         Notice notice = Notice.builder()
                 .nTitle(noticeDTO.getNTitle())
                 .nContent(noticeDTO.getNContent()) // 수정된 부분
-                .nDate(noticeDTO.getNDate())
                 .build();
         // Notice 저장
         Notice savedNotice = noticeRepository.save(notice);

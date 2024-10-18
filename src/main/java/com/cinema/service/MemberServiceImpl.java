@@ -5,8 +5,13 @@ import com.cinema.domain.MemberRole;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.repository.MemberRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -20,6 +25,7 @@ public class MemberServiceImpl  implements MemberService {
     public MemberServiceImpl(MemberRepository memberRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberRepository = memberRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+
     }
 
     // 저장 메서드
@@ -52,5 +58,11 @@ public class MemberServiceImpl  implements MemberService {
     public boolean findById(String id) {
         Optional<Member> member = memberRepository.findById(id);
         return member.isEmpty(); // 존재하지 않으면 true, 존재하면 false
+    }
+
+
+    @Override
+    public Page<Member>findAllMembers(Pageable pageable) {
+        return memberRepository.findAll(pageable); //페이지 점보를 포함
     }
 }
