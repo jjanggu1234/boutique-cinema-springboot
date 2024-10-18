@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.Mapping;
 
+import java.time.LocalDate;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class NoticeServiceImpl implements NoticeService {
         Notice notice = Notice.builder()
                 .nTitle(noticeDTO.getNTitle())
                 .nContent(noticeDTO.getNContent()) // 수정된 부분
+                .nDate(LocalDate.now())
                 .build();
         // Notice 저장
         Notice savedNotice = noticeRepository.save(notice);

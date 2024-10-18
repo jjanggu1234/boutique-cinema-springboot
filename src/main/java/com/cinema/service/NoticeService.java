@@ -4,7 +4,9 @@ package com.cinema.service;
 import com.cinema.dto.movie.NoticeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface NoticeService {
  Long register(NoticeDTO noticeDTO);
  NoticeDTO get(Long nNum);
