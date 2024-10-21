@@ -35,17 +35,6 @@ public class CustomSecurityConfig {
         http.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(config -> config.disable());      // csrf 설정
 
-//         URL 접근 제어 설정
-//        http.authorizeHttpRequests(auth -> auth
-//                .requestMatchers(
-//                        new AntPathRequestMatcher("/"),
-//                        new AntPathRequestMatcher("/api/member/joinpage"),
-//                        new AntPathRequestMatcher("/api/member/check-id"),
-//                        new AntPathRequestMatcher("/api/member/login"))
-//                .permitAll()  // 회원가입과 로그인 페이지는 인증 없이 접근 가능
-//                .anyRequest().authenticated()  // 그 외 모든 요청은 인증 필요
-//        );
-
         // formLogin 설정을 auth 밖에서 별도로 설정
         http.formLogin(config -> {
             config.loginPage("/api/member/login")      // 로그인 페이지

@@ -8,6 +8,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -41,6 +43,11 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             log.info(memberDTO);
             log.info(memberDTO.getAuthorities());
 
+            UsernamePasswordAuthenticationToken authenticationToken = new
+                    UsernamePasswordAuthenticationToken(memberDTO.getUsername(), password, memberDTO.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error("JWT Check Error....");
             log.error(e.getMessage());
@@ -76,6 +83,10 @@ public class JWTCheckFilter extends OncePerRequestFilter {
 
         // api/member/ 경로의 호출은 체크하지 않음
         if (path.startsWith("/api/member/")) {
+            return true;
+        }
+
+        if (path.startsWith("/api/admin/")) {
             return true;
         }
 
