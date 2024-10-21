@@ -9,4 +9,8 @@ public interface ReservationService {
   List<ReservationDTO> getAllReservations();
 
   List<ReservationDTO> getReservationsByMember(String mId) throws Exception;
+
+  ReservationDTO getReservationByRNum(String rNum) throws Exception;
+
+  void cancelReservation(String rNum) throws Exception;
 }

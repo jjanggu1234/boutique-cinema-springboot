@@ -8,6 +8,7 @@ import com.cinema.repository.MemberRepository;
 import com.cinema.repository.MovieRepository;
 import com.cinema.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -77,5 +78,33 @@ public class ReservationServiceImpl implements ReservationService {
               return savedDTO;
             })
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public ReservationDTO getReservationByRNum(String rNum) throws Exception {
+    Reservation reservation =
+        reservationRepository
+            .findById(rNum)
+            .orElseThrow(() -> new RuntimeException("Reservation not found with rNum: " + rNum));
+
+    ReservationDTO savedDTO = modelMapper.map(reservation, ReservationDTO.class);
+
+    savedDTO.setMId(reservation.getMember().getId());
+    savedDTO.setMovieNum(reservation.getMovie().getMovieNum());
+    return savedDTO;
+  }
+
+  @Override
+  @Transactional
+  public void cancelReservation(String rNum) throws Exception {
+    Reservation reservation =
+        reservationRepository
+            .findById(rNum)
+            .orElseThrow(() -> new RuntimeException("Reservation not found with rNum: " + rNum));
+
+    reservation.setIsCanceled(1);
+    reservation.setCancelDate(LocalDateTime.now());
+
+    reservationRepository.save(reservation);
   }
 }

@@ -76,22 +76,22 @@ public class Reservation {
   private int rPersonPrice5; // 예매인원5 가격
   private int rPersonPrice6; // 예매인원6 가격
 
-  @Column(length = 3, nullable = false, unique = true)
+  @Column(length = 3, nullable = false)
   private String seatNum1; // 좌석번호1
 
-  @Column(length = 3, unique = true)
+  @Column(length = 3)
   private String seatNum2; // 좌석번호2
 
-  @Column(length = 3, unique = true)
+  @Column(length = 3)
   private String seatNum3; // 좌석번호3
 
-  @Column(length = 3, unique = true)
+  @Column(length = 3)
   private String seatNum4; // 좌석번호4
 
-  @Column(length = 3, unique = true)
+  @Column(length = 3)
   private String seatNum5; // 좌석번호5
 
-  @Column(length = 3, unique = true)
+  @Column(length = 3)
   private String seatNum6; // 좌석번호6
 
   @ManyToOne
@@ -101,12 +101,4 @@ public class Reservation {
   @ManyToOne
   @JoinColumn(name = "movie_num", nullable = false) // 영화번호 fk
   private Movie movie;
-
-  public void changeCancel(Integer isCanceled) {
-    this.isCanceled = isCanceled;
-  }
-
-  public void changeCancelDate(LocalDateTime cancelDate) {
-    this.cancelDate = cancelDate;
-  }
 }
