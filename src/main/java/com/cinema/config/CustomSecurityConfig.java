@@ -1,47 +1,58 @@
 package com.cinema.config;
 
-import java.util.Arrays;
-import java.util.List;
+
+import com.cinema.security.filter.JWTCheckFilter;
+import com.cinema.security.handler.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.Arrays;
+
 
 @Configuration
 @Log4j2
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class CustomSecurityConfig {
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.cors(httpSecurityCorsConfigurer -> {
-                    httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
-                });
+            httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource());
+        });
 
-        // CSRF 설정
-        http.csrf((csrf) -> csrf.disable());
+        http.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.csrf(config -> config.disable());      // csrf 설정
 
+        // formLogin 설정을 auth 밖에서 별도로 설정
+        http.formLogin(config -> {
+            config.loginPage("/api/member/login")      // 로그인 페이지
+                    .successHandler(new APILoginSuccessHandler())
+                    .failureHandler(new APILoginFailHandler())
+                    .usernameParameter("id")             // 사용자 이름 필드 이름 설정
+                    .passwordParameter("password");
+//                    .successHandler(new APILoginSuccessHandler())
+//                    .failureHandler(new APILoginFailHandler())
+//                    .defaultSuccessUrl("/")         // 로그인 성공 시 이동할 페이지
+//                    .permitAll();
+        });
+        
+        http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class);     // JWT 체크 추가
 
-        // 기본 설정인 Seesion 방식은 사용하지 않고 JWT 방식을 사용하기 위한 설정
-        http.sessionManagement((sessionManagement) ->
-                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        );
-
-        http.authorizeHttpRequests((authorizeHttpRequests) ->
-                authorizeHttpRequests
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers("/").permitAll() // 메인 페이지 요청 허가
-                        .requestMatchers("/api/**").permitAll() // '/api/member/'로 시작하는 요청 모두 접근 허가
-                        .anyRequest().authenticated() // 그 외 모든 요청 인증처리
-        );
+        http.exceptionHandling(config -> {
+            config.accessDeniedHandler(new CustomAccessDeniedHandler());
+        });
 
         return http.build();
     }
@@ -51,13 +62,11 @@ public class CustomSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -67,8 +76,4 @@ public class CustomSecurityConfig {
 
         return source;
     }
-
-
-
-
 }

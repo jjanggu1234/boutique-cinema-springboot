@@ -1,31 +1,25 @@
 package com.cinema.controller;
 
 import com.cinema.domain.Member;
-//import com.cinema.dto.member.MemberDTO;
-import com.cinema.dto.member.AdminMemberListDTO;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("api/member")
 public class MemberController {
 
     private final MemberService memberService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-//    @PostMapping("/joinPage")
-//    public void register(@RequestBody MemberJoinDTO dto) {
-//        memberService.save(dto);   // 회원 가입 메서드 호출
-//    }
-
-    @PostMapping("/joinpage")
+    @PostMapping("joinpage")
     public ResponseEntity<Member> join(@RequestBody MemberJoinDTO joinDTO) {
           memberService.save(joinDTO);
           return ResponseEntity.ok().build();
@@ -37,20 +31,13 @@ public class MemberController {
         return ResponseEntity.ok(isAvailable);
     }
 
-    // 전체 회원 조회 API (관리자만 접근 가능)
-    @GetMapping("/admin/userlist")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<AdminMemberListDTO>> getAllMembers() {
-        List<AdminMemberListDTO> members = memberService.getAllMembers();
-        return ResponseEntity.ok(members);
-    }
-
-    // 회원 검색 API (관리자만 접근 가능)
-    @GetMapping("/admin/search")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<AdminMemberListDTO>> searchMember(@RequestParam("keyword") String keyword) {
-        List<AdminMemberListDTO> members = memberService.searchMembers(keyword);
-        return ResponseEntity.ok(members);
-    }
+   @GetMapping("/list")
+public ResponseEntity<Page<Member>> getAllMembers(
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "10") int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<Member> members = memberService.findAllMembers(pageable);
+    return ResponseEntity.ok(members);
+ }
 
 }
