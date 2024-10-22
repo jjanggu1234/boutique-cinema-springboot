@@ -8,6 +8,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -22,7 +24,7 @@ import java.util.Map;
 public class JWTCheckFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
 
         String authHeaderStr = request.getHeader("Authorization");
         try {
@@ -33,14 +35,24 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             String id = (String) claims.get("id");
             String password = (String) claims.get("password");
+            String name = (String) claims.get("name");
+            String email = (String) claims.get("email");
+            String phone = (String) claims.get("phone");
+            String birth = (String) claims.get("birth");
+            Integer isTreated = (Integer) claims.get("isTreated");
             List<String> roleNames = (List<String>) claims.get("roles");
 
-            MemberDTO memberDTO = new MemberDTO(id, password, name, email, phone, birth, isTreated,roleNames);
+            MemberDTO memberDTO = new MemberDTO(id, password, name, email, phone, birth, isTreated, roleNames);
 
             log.info("--------------");
             log.info(memberDTO);
             log.info(memberDTO.getAuthorities());
 
+            UsernamePasswordAuthenticationToken authenticationToken = new
+                    UsernamePasswordAuthenticationToken(memberDTO.getUsername(), password, memberDTO.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            filterChain.doFilter(request, response);
         } catch (Exception e) {
             log.error("JWT Check Error....");
             log.error(e.getMessage());
