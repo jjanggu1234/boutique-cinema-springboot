@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,7 @@ public class MovieController {
   private final CustomFileUtil fileUtil;
   private final MovieService movieService;
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping // 영화 등록
   public Map<String, String> register(
       @ModelAttribute MovieDTO movieDTO, @RequestParam(value = "file") MultipartFile file)
@@ -55,6 +57,7 @@ public class MovieController {
   public MovieDTO getMovie(@PathVariable Long movieNum) throws Exception {
     return movieService.get(movieNum);
   }
+
 
   @GetMapping("/list") // 영화 목록 조회 (전체 목록)
   public Page<MovieDTO> getMovies(
@@ -92,6 +95,7 @@ public class MovieController {
     return movieService.getMoviesEarliestByDate(pageable);
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PutMapping("/{movieNum}") // 영화 수정
   public ResponseEntity<Void> modifyMovie(
       @PathVariable Long movieNum,
@@ -117,6 +121,7 @@ public class MovieController {
     return ResponseEntity.ok().build(); // 성공 응답
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @DeleteMapping("/{movieNum}") // 영화 삭제
   public ResponseEntity<Void> removeMovie(@PathVariable Long movieNum) throws Exception {
     movieService.remove(movieNum);

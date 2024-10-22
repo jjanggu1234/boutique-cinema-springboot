@@ -1,7 +1,7 @@
 package com.cinema.config;
 
 
-//import com.cinema.security.filter.JWTCheckFilter;
+import com.cinema.security.filter.JWTCheckFilter;
 import com.cinema.security.handler.CustomAccessDeniedHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -35,15 +35,11 @@ public class CustomSecurityConfig {
         http.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(config -> config.disable());      // csrf 설정
 
-//         URL 접근 제어 설정
-//        http.authorizeHttpRequests(auth -> auth
-//                .requestMatchers(
-//                        new AntPathRequestMatcher("/"),
-//                        new AntPathRequestMatcher("/api/member/joinpage"),
-//                        new AntPathRequestMatcher("/api/member/check-id"),
-//                        new AntPathRequestMatcher("/api/member/login"))
-//                .permitAll()  // 회원가입과 로그인 페이지는 인증 없이 접근 가능
-//                .anyRequest().authenticated()  // 그 외 모든 요청은 인증 필요
+//        http.authorizeRequests(authorizeRequests ->
+//                authorizeRequests
+//                        .requestMatchers("/reserve").hasAnyRole("ROLE_USER", "ROLE_ADMIN") // /reserve 엔드포인트 보호
+//                        .anyRequest().permitAll() // 다른 모든 요청은 인증 필요
+//
 //        );
 
         // formLogin 설정을 auth 밖에서 별도로 설정
@@ -53,13 +49,9 @@ public class CustomSecurityConfig {
                     .failureHandler(new APILoginFailHandler())
                     .usernameParameter("id")             // 사용자 이름 필드 이름 설정
                     .passwordParameter("password");
-//                    .successHandler(new APILoginSuccessHandler())
-//                    .failureHandler(new APILoginFailHandler())
-//                    .defaultSuccessUrl("/")         // 로그인 성공 시 이동할 페이지
-//                    .permitAll();
         });
-        
-//        http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class);     // JWT 체크 추가
+
+        http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class);     // JWT 체크 추가
 
         http.exceptionHandling(config -> {
             config.accessDeniedHandler(new CustomAccessDeniedHandler());

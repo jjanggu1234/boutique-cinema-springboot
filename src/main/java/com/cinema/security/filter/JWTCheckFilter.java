@@ -35,7 +35,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String password = (String) claims.get("password");
             List<String> roleNames = (List<String>) claims.get("roles");
 
-            MemberDTO memberDTO = new MemberDTO(id, password, roleNames);
+            MemberDTO memberDTO = new MemberDTO(id, password, name, email, phone, birth, isTreated,roleNames);
 
             log.info("--------------");
             log.info(memberDTO);
@@ -64,21 +64,16 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         log.info("check uri......" + path);
 
-        // api/movie/ 경로의 호출은 체크하지 않음
-        if (path.startsWith("/api/movie/")) {
+        if (path.startsWith("/api/movie/") ||
+                path.startsWith("/api/support/") ||
+                path.startsWith("/api/member/") ||
+                path.matches("/api/admin/movie/list.*") || // 모든 list 경로
+                path.matches("/api/admin/movie/view/.*") || // view 경로의 모든 파일
+                path.matches("/api/admin/movie/[0-9]+") ||
+                path.matches("/api/reservation/list")) {
+
             return true;
         }
-
-        // api/support/ 경로의 호출은 체크하지 않음
-        if (path.startsWith("/api/support/")) {
-            return true;
-        }
-
-        // api/member/ 경로의 호출은 체크하지 않음
-        if (path.startsWith("/api/member/")) {
-            return true;
-        }
-
         return false;
     }
 }
