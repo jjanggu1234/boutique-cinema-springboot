@@ -17,5 +17,9 @@ public interface MemberService {
     // 아이디 중복체크 메서드
     boolean findById(String id);
 
-    Page<Member> findAllMembers(Pageable pageable);
+    Page<Member> findAllMembers(Pageable pageable) throws Exception;
+
+    Page<Member> findBySearchCondition(String condition, Pageable pageable);
+
+    void updateTreatedStatus(String id, Integer isTreated);
 }
