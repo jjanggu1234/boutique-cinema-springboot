@@ -13,6 +13,7 @@ import java.util.List;
 @Table(name = "MEMBER_TBL")
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity

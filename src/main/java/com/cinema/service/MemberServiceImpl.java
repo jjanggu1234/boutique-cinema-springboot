@@ -62,7 +62,25 @@ public class MemberServiceImpl  implements MemberService {
 
 
     @Override
-    public Page<Member>findAllMembers(Pageable pageable) {
+    public Page<Member>findAllMembers(Pageable pageable) throws Exception {
         return memberRepository.findAll(pageable); //페이지 점보를 포함
     }
+
+     @Override
+    public Page<Member> findBySearchCondition(String condition, Pageable pageable) {
+        // 조건에 따른 조회 로직 구현
+        return memberRepository.findByCondition(condition, pageable);
+    }
+
+     @Override
+    public void updateTreatedStatus(String id, Integer isTreated) {
+        //회원을 ID로 조회
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+         //우대 여부 업데이트
+        member.setIsTreated(isTreated);
+         //업데이트된 회원 정보 저장
+        memberRepository.save(member); // 업데이트된 회원 정보 저장
+    }
+
 }
