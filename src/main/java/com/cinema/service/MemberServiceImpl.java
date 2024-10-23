@@ -69,5 +69,5 @@ public class MemberServiceImpl  implements MemberService {
         // 조건에 따른 조회 로직 구현
         return memberRepository.findByCondition(condition, pageable);
     }
-    
+
 }
