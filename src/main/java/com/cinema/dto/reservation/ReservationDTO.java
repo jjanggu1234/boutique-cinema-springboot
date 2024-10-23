@@ -1,7 +1,6 @@
 package com.cinema.dto.reservation;
 
 import jakarta.validation.constraints.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
@@ -18,11 +17,13 @@ public class ReservationDTO {
   private String rNum; // 영화예매번호
 
   @NotNull
-  @Size(min = 1, max = 1, message = "상영관 번호는 0,1 둘 중 하나의 값만 가질 수 있습니다.")
+  @Min(0)
+  @Max(10)
   private Integer theaterNum; // 영화예매 상영관 번호
 
   @NotNull
-  @Size(min = 1, max = 1, message = "상영회차 번호는 0,1 둘 중 하나의 값만 가질 수 있습니다.")
+  @Min(0)
+  @Max(10)
   private Integer roundNum; // 영화예매 상영회차 번호
 
   @NotNull
@@ -37,13 +38,12 @@ public class ReservationDTO {
 
   private LocalDateTime cancelDate; // 영화예매 취소날짜
 
-  @Size(max = 500, message = "관람 후기는 최대 500자까지 입력할 수 있습니다.")
+  @Size(max = 100, message = "관람 후기는 최대 100자까지 입력할 수 있습니다.")
   private String reviewContent; // 관람후기내용
 
-  @Digits(integer = 2, fraction = 1, message = "관람 후기 평점은 0.0 이상 10.0 이하이어야 합니다.")
-  @DecimalMin(value = "0.0", message = "관람 후기 평점은 최소 0.0 이상이어야 합니다.")
-  @DecimalMax(value = "10.0", message = "관람 후기 평점은 10.0을 초과할 수 없습니다.")
-  private BigDecimal reviewRating; // 관람후기평점
+  @Min(value = 0, message = "관람 후기 평점은 최소 0 이상이어야 합니다.")
+  @Max(value = 10, message = "관람 후기 평점은 10을 초과할 수 없습니다.")
+  private Integer reviewRating; // 관람후기평점
 
   @NotNull
   @Size(max = 3, message = "예매 인원 구분은 최대 3자까지 입력할 수 있습니다.")
