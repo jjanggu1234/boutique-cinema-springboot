@@ -4,6 +4,7 @@ import com.cinema.domain.Member;
 import com.cinema.domain.Movie;
 import com.cinema.domain.Reservation;
 import com.cinema.dto.reservation.ReservationDTO;
+import com.cinema.dto.reservation.ReviewDTO;
 import com.cinema.repository.MemberRepository;
 import com.cinema.repository.MovieRepository;
 import com.cinema.repository.ReservationRepository;
@@ -104,6 +105,20 @@ public class ReservationServiceImpl implements ReservationService {
 
     reservation.setIsCanceled(1);
     reservation.setCancelDate(LocalDateTime.now());
+
+    reservationRepository.save(reservation);
+  }
+
+  @Override
+  @Transactional
+  public void updateReview(String rNum, ReviewDTO reviewDTO) throws Exception {
+    Reservation reservation =
+        reservationRepository
+            .findById(rNum)
+            .orElseThrow(() -> new RuntimeException("Reservation not found with rNum: " + rNum));
+
+    reservation.setReviewRating(reviewDTO.getReviewRating());
+    reservation.setReviewContent(reviewDTO.getReviewContent());
 
     reservationRepository.save(reservation);
   }

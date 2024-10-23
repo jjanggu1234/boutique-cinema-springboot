@@ -1,8 +1,10 @@
 package com.cinema.controller;
 
 import com.cinema.dto.reservation.ReservationDTO;
+import com.cinema.dto.reservation.ReviewDTO;
 import com.cinema.repository.ReservationRepository;
 import com.cinema.service.ReservationService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +23,7 @@ public class ReservationController {
   private final ModelMapper modelMapper;
 
   @PostMapping
-  public ResponseEntity<ReservationDTO> createReservation(ReservationDTO reservationDTO)
+  public ResponseEntity<ReservationDTO> createReservation(@Valid ReservationDTO reservationDTO)
       throws Exception {
     System.out.println(reservationDTO);
     ReservationDTO createdReservationDTO = reservationService.register(reservationDTO);
@@ -56,5 +58,13 @@ public class ReservationController {
     reservationService.cancelReservation(rNum);
 
     return ResponseEntity.ok("Reservation canceled successfully.");
+  }
+
+  @PutMapping("/review/{rNum}")
+  public ResponseEntity<String> updateReview(
+      @PathVariable String rNum, @RequestBody @Valid ReviewDTO reviewDTO) throws Exception {
+
+    reservationService.updateReview(rNum, reviewDTO);
+    return ResponseEntity.ok("Reservation review successfully.");
   }
 }

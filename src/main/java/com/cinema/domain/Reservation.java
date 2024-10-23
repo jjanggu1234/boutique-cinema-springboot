@@ -2,7 +2,6 @@ package com.cinema.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.*;
@@ -22,10 +21,10 @@ public class Reservation {
   @Size(min = 12)
   private String rNum; // 영화예매번호
 
-  @Column(nullable = false, length = 1)
+  @Column(nullable = false)
   private Integer theaterNum; // 영화예매 상영관 번호
 
-  @Column(nullable = false, length = 1)
+  @Column(nullable = false)
   private Integer roundNum; // 영화예매 상영회차 번호
 
   @Column(nullable = false)
@@ -43,11 +42,11 @@ public class Reservation {
 
   private LocalDateTime cancelDate; // 영화예매 취소일자
 
-  @Column(length = 500)
+  @Column(length = 100)
   private String reviewContent; // 관람후기내용
 
-  @Column(precision = 3, scale = 1)
-  private BigDecimal reviewRating; // 관람후기평점
+  @Column(precision = 2, scale = 0)
+  private Integer reviewRating; // 관람후기평점
 
   @Column(length = 3, nullable = false)
   private String rPersonType1; // 예매인원1 구분

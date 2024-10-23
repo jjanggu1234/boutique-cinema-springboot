@@ -1,6 +1,7 @@
 package com.cinema.service;
 
 import com.cinema.dto.reservation.ReservationDTO;
+import com.cinema.dto.reservation.ReviewDTO;
 import java.util.List;
 
 public interface ReservationService {
@@ -13,4 +14,6 @@ public interface ReservationService {
   ReservationDTO getReservationByRNum(String rNum) throws Exception;
 
   void cancelReservation(String rNum) throws Exception;
+
+  void updateReview(String rNum, ReviewDTO reviewDTO) throws Exception;
 }
