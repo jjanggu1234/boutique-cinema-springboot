@@ -2,10 +2,8 @@ package com.cinema.controller;
 
 
 
-import com.cinema.dto.common.PageRequestDTO;
-import com.cinema.dto.movie.MovieDTO;
+
 import com.cinema.dto.movie.NoticeDTO;
-import com.cinema.service.MovieService;
 import com.cinema.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/notices")

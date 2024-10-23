@@ -5,10 +5,8 @@ import com.cinema.domain.MemberRole;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.repository.MemberRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -72,15 +70,6 @@ public class MemberServiceImpl  implements MemberService {
         return memberRepository.findByCondition(condition, pageable);
     }
 
-     @Override
-    public void updateTreatedStatus(String id, Integer isTreated) {
-        //회원을 ID로 조회
-        Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
-         //우대 여부 업데이트
-        member.setIsTreated(isTreated);
-         //업데이트된 회원 정보 저장
-        memberRepository.save(member); // 업데이트된 회원 정보 저장
-    }
+
 
 }
