@@ -77,7 +77,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         log.info("check uri......" + path);
 
         if (path.startsWith("/api/movie/") ||
-                path.startsWith("/api/support/") ||
+                path.startsWith("/api/admin/notices/") ||
                 path.startsWith("/api/member/") ||
                 path.matches("/api/admin/movie/list.*") || // 모든 list 경로
                 path.matches("/api/admin/movie/view/.*") || // view 경로의 모든 파일
