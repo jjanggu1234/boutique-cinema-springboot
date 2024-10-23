@@ -76,13 +76,11 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
         log.info("check uri......" + path);
 
-        if (path.startsWith("/api/movie/") ||
-                path.startsWith("/api/support/") ||
+        if (    path.startsWith("/api/admin/notices/") ||
                 path.startsWith("/api/member/") ||
-                path.matches("/api/admin/movie/list.*") || // 모든 list 경로
-                path.matches("/api/admin/movie/view/.*") || // view 경로의 모든 파일
-                path.matches("/api/admin/movie/[0-9]+") ||
-                path.matches("/api/reservation/list")) {
+                path.matches("/api/admin/movie/list.*") ||
+                path.matches("/api/admin/movie/view/.*"))
+        {
 
             return true;
         }
