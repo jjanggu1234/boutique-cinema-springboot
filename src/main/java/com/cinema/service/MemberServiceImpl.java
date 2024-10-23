@@ -5,8 +5,13 @@ import com.cinema.domain.MemberRole;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.repository.MemberRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -20,6 +25,7 @@ public class MemberServiceImpl  implements MemberService {
     public MemberServiceImpl(MemberRepository memberRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.memberRepository = memberRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+
     }
 
     // 저장 메서드
@@ -53,4 +59,28 @@ public class MemberServiceImpl  implements MemberService {
         Optional<Member> member = memberRepository.findById(id);
         return member.isEmpty(); // 존재하지 않으면 true, 존재하면 false
     }
+
+
+    @Override
+    public Page<Member>findAllMembers(Pageable pageable) throws Exception {
+        return memberRepository.findAll(pageable); //페이지 점보를 포함
+    }
+
+     @Override
+    public Page<Member> findBySearchCondition(String condition, Pageable pageable) {
+        // 조건에 따른 조회 로직 구현
+        return memberRepository.findByCondition(condition, pageable);
+    }
+
+     @Override
+    public void updateTreatedStatus(String id, Integer isTreated) {
+        //회원을 ID로 조회
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Member not found"));
+         //우대 여부 업데이트
+        member.setIsTreated(isTreated);
+         //업데이트된 회원 정보 저장
+        memberRepository.save(member); // 업데이트된 회원 정보 저장
+    }
+
 }
