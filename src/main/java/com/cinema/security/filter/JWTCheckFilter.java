@@ -32,7 +32,8 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String accessToken = authHeaderStr.substring(7);
             Map<String, Object> claims = JWTUtil.validateToken(accessToken);
             log.info("JWT claims: " + claims);
-            filterChain.doFilter(request, response);
+//            filterChain.doFilter(request, response);
+
             String id = (String) claims.get("id");
             String password = (String) claims.get("password");
             String name = (String) claims.get("name");
@@ -40,7 +41,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
             String phone = (String) claims.get("phone");
             String birth = (String) claims.get("birth");
             Integer isTreated = (Integer) claims.get("isTreated");
-            List<String> roleNames = (List<String>) claims.get("roles");
+            List<String> roleNames = (List<String>) claims.get("roleNames");
 
             MemberDTO memberDTO = new MemberDTO(id, password, name, email, phone, birth, isTreated, roleNames);
 
@@ -74,16 +75,15 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         }
 
         String path = request.getRequestURI();
+        String method = request.getMethod();
         log.info("check uri......" + path);
 
-        if (    path.startsWith("/api/admin/notices/") ||
-                path.startsWith("/api/member/") ||
-                path.matches("/api/admin/movie/list.*") ||
-                path.matches("/api/admin/movie/view/.*"))
-        {
-
+        if (path.matches("/api/admin/movie/[0-9]+") && method.equals("GET")) {
             return true;
         }
-        return false;
+        return path.startsWith("/api/admin/notices/") ||
+                path.startsWith("/api/member/") ||
+                path.startsWith("/api/admin/movie/list") ||
+                path.matches("/api/admin/movie/view/.*");
     }
 }

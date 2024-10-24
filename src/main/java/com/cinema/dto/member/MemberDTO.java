@@ -31,7 +31,7 @@ public class MemberDTO extends User {        // 로그인 DTO
 
     public MemberDTO(String id, String password, String name, String email, String phone, String birth, Integer isTreated, List<String> roleNames) {
         super(id, password, roleNames.stream().map(str ->
-                new SimpleGrantedAuthority("ROLE_ + str")).collect(Collectors.toList()));
+                new SimpleGrantedAuthority("ROLE_" + str)).collect(Collectors.toList()));
         this.id = id;
         this.password = password;
         this.name = name;
