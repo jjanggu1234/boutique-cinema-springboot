@@ -85,7 +85,7 @@ public class NoticeServiceImpl implements NoticeService {
         // Notice 엔티티의 필드 값 변경
         notice.changeNTitle(noticeDTO.getNTitle());
         notice.changeNContent(noticeDTO.getNContent());
-        noticeRepository.save(notice);
+        noticeRepository.save(notice); 
     }
 
     @Override
