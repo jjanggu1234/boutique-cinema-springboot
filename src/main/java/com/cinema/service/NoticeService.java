@@ -1,6 +1,5 @@
 package com.cinema.service;
 
-;
 import com.cinema.dto.movie.NoticeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
