@@ -19,7 +19,9 @@ public interface MemberService {
 
     Page<Member> findAllMembers(Pageable pageable) throws Exception;
 
-    Page<Member> findBySearchCondition(String condition, Pageable pageable);
+    Page<Member> findBySearchCondition(String condition, Pageable pageable) throws Exception;
 
     void updateTreatedStatus(String id, Integer isTreated);
+
+
 }

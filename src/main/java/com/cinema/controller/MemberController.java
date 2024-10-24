@@ -58,6 +58,18 @@ public ResponseEntity<Page<Member>> getAllMembers(
     }
 }
 
+@GetMapping("/members")
+public ResponseEntity<Page<Member>> getMembers(@RequestParam(required = false) String condition,
+                                               Pageable pageable) throws Exception {
+        Page<Member> members;
+        if (condition != null && !condition.isEmpty()) {
+            members = memberService.findBySearchCondition(condition, pageable);
+        }else {
+            members = memberService.findAllMembers(pageable);
+        }
+        return ResponseEntity.ok(members);
+}
+
 @PatchMapping("/{id}/treated")
 public ResponseEntity<Void> updateTreatedStatus(@PathVariable String id, @RequestBody Integer isTreated) {
     // 입력 검증
