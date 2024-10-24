@@ -70,21 +70,4 @@ public ResponseEntity<Page<Member>> getMembers(@RequestParam(required = false) S
         return ResponseEntity.ok(members);
 }
 
-@PatchMapping("/{id}/treated")
-public ResponseEntity<Void> updateTreatedStatus(@PathVariable String id, @RequestBody Integer isTreated) {
-    // 입력 검증
-    if (isTreated == null || (isTreated != 0 && isTreated != 1)) {
-        return ResponseEntity.badRequest().build(); // 잘못된 요청
-    }
-
-    // 서비스에서 우대 여부 업데이트 메소드 호출
-    try {
-        memberService.updateTreatedStatus(id, isTreated);
-        return ResponseEntity.ok().build(); // 성공적으로 업데이트
-    } catch (NoSuchElementException e) {
-        return ResponseEntity.notFound().build(); // 사용자가 존재하지 않는 경우
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 기타 오류 처리
-    }
-}
 }

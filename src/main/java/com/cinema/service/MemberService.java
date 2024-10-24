@@ -19,8 +19,4 @@ public interface MemberService {
 
     Page<Member> findBySearchCondition(String condition, Pageable pageable) throws Exception;
 
-
-    void updateTreatedStatus(String id, Integer isTreated);
-
-
 }
