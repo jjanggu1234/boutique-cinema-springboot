@@ -2,7 +2,10 @@ package com.cinema.service;
 
 import com.cinema.domain.Member;
 import com.cinema.domain.MemberRole;
+import com.cinema.dto.member.CheckToResetPasswordDTO;
+import com.cinema.dto.member.FindIdDTO;
 import com.cinema.dto.member.MemberJoinDTO;
+import com.cinema.dto.member.ResetPasswordDTO;
 import com.cinema.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -56,6 +59,30 @@ public class MemberServiceImpl  implements MemberService {
     public boolean findById(String id) {
         Optional<Member> member = memberRepository.findById(id);
         return member.isEmpty(); // 존재하지 않으면 true, 존재하면 false
+    }
+
+    // 아이디 찾기 메서드
+    public String findId(FindIdDTO findIdDTO) {
+        Optional<Member> member = memberRepository.findByPhoneAndEmail(findIdDTO.getPhone(), findIdDTO.getEmail());
+        return member.map(Member::getId).orElse(null);
+    }
+
+    // 비밀번호 재설정을 위한 회원확인
+    public boolean checkMemberToReset(CheckToResetPasswordDTO checkToResetPasswordDTO) {
+
+        return memberRepository.existsByIdAndNameAndPhone(checkToResetPasswordDTO.getId(), checkToResetPasswordDTO.getName(), checkToResetPasswordDTO.getPhone());
+    }
+
+    // 비밀번호 재설정
+    @Transactional
+    public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
+        String memberId = resetPasswordDTO.getId();
+        String newPassword = resetPasswordDTO.getPassword();
+
+        // 비밀번호 암호화
+        String encodedPassword = bCryptPasswordEncoder.encode(newPassword);
+        // 비밀번호 업데이트
+        memberRepository.updatePassword(memberId, encodedPassword);
     }
 
 

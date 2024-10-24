@@ -1,7 +1,10 @@
 package com.cinema.controller;
 
 import com.cinema.domain.Member;
+import com.cinema.dto.member.FindIdDTO;
 import com.cinema.dto.member.MemberJoinDTO;
+import com.cinema.dto.member.CheckToResetPasswordDTO;
+import com.cinema.dto.member.ResetPasswordDTO;
 import com.cinema.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,13 +21,41 @@ public class MemberController {
 
     private final MemberService memberService;
     private final BCryptPasswordEncoder passwordEncoder;
-
+    
+    // 회원가입
     @PostMapping("joinpage")
     public ResponseEntity<Member> join(@RequestBody MemberJoinDTO joinDTO) {
           memberService.save(joinDTO);
           return ResponseEntity.ok().build();
     }
+    // 로그인
+    @PostMapping("findId")
+    public  ResponseEntity<String> findById(@RequestBody FindIdDTO findIdDTO) {
+        String memberId = memberService.findId(findIdDTO);
+        if (memberId != null) {
+            return ResponseEntity.ok().body(memberId);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    // 비밀번호 수정을 위한 회원확인
+    @PostMapping("check-member")
+    public ResponseEntity<Void> checkToReset(@RequestBody CheckToResetPasswordDTO checkToResetPasswordDTO) {
+        boolean exists = memberService.checkMemberToReset(checkToResetPasswordDTO);
 
+        // 사용자가 존재하지 않으면 404 반환
+        if (exists) {
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+    // 비밀번호 재설정
+    @PostMapping("reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
+        memberService.resetPassword(resetPasswordDTO);
+        return ResponseEntity.ok().build();
+    }
+    // 아이디 중복체크
     @GetMapping("/check-id")
     public ResponseEntity<Boolean> checkId(String id) {
         boolean isAvailable = memberService.findById(id);
@@ -53,6 +84,4 @@ public ResponseEntity<Page<Member>> getAllMembers(
         return ResponseEntity.ok(members);
     }
 }
-
-
 }
