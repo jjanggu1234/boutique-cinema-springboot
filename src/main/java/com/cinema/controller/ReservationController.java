@@ -33,7 +33,6 @@ public class ReservationController {
     return new ResponseEntity<>(createdReservationDTO, HttpStatus.CREATED);
   }
 
-  @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
   @GetMapping("/list")
   public ResponseEntity<List<ReservationDTO>> getAllReservations() {
     List<ReservationDTO> reservations = reservationService.getAllReservations();
