@@ -97,6 +97,12 @@ public class ReservationServiceImpl implements ReservationService {
 
   @Override
   @Transactional
+  public void deleteReservationByRNum(String rNum) throws Exception {
+    reservationRepository.deleteById(rNum);
+  }
+
+  @Override
+  @Transactional
   public void cancelReservation(String rNum) throws Exception {
     Reservation reservation =
         reservationRepository

@@ -13,6 +13,8 @@ public interface ReservationService {
 
   ReservationDTO getReservationByRNum(String rNum) throws Exception;
 
+  void deleteReservationByRNum(String rNum) throws Exception;
+
   void cancelReservation(String rNum) throws Exception;
 
   void updateReview(String rNum, ReviewDTO reviewDTO) throws Exception;

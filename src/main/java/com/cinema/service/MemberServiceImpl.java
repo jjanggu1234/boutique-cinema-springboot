@@ -86,13 +86,14 @@ public class MemberServiceImpl  implements MemberService {
     }
 
 
+ //회원리스트
     @Override
     public Page<Member>findAllMembers(Pageable pageable) throws Exception {
         return memberRepository.findAll(pageable); //페이지 점보를 포함
     }
 
      @Override
-    public Page<Member> findBySearchCondition(String condition, Pageable pageable) {
+    public Page<Member> findBySearchCondition(String condition, Pageable pageable) throws Exception {
         // 조건에 따른 조회 로직 구현
         return memberRepository.findByCondition(condition, pageable);
     }

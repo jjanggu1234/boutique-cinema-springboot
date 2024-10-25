@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/member")
@@ -21,7 +22,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final BCryptPasswordEncoder passwordEncoder;
-    
+
     // 회원가입
     @PostMapping("joinpage")
     public ResponseEntity<Member> join(@RequestBody MemberJoinDTO joinDTO) {
@@ -84,4 +85,17 @@ public ResponseEntity<Page<Member>> getAllMembers(
         return ResponseEntity.ok(members);
     }
 }
+
+@GetMapping("/members")
+public ResponseEntity<Page<Member>> getMembers(@RequestParam(required = false) String condition,
+                                               Pageable pageable) throws Exception {
+        Page<Member> members;
+        if (condition != null && !condition.isEmpty()) {
+            members = memberService.findBySearchCondition(condition, pageable);
+        }else {
+            members = memberService.findAllMembers(pageable);
+        }
+        return ResponseEntity.ok(members);
+}
+
 }

@@ -39,7 +39,7 @@ public class ReservationController {
     return ResponseEntity.ok(reservations);
   }
 
-  @PreAuthorize("hasAnyRole('ROLE_USER')")
+  @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
   @GetMapping("/member/{mId}")
   public ResponseEntity<List<ReservationDTO>> getReservationsByMember(
       @PathVariable("mId") String mId) throws Exception {
@@ -55,6 +55,13 @@ public class ReservationController {
     ReservationDTO reservationDTO = reservationService.getReservationByRNum(rNum);
 
     return ResponseEntity.ok(reservationDTO);
+  }
+
+  @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+  @DeleteMapping("/{rNum}")
+  public ResponseEntity<String> deleteReservation(@PathVariable String rNum) throws Exception {
+    reservationService.deleteReservationByRNum(rNum);
+    return ResponseEntity.ok("Reservation with rNum " + rNum + " deleted successfully");
   }
 
   @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
