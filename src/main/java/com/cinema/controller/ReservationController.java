@@ -58,6 +58,13 @@ public class ReservationController {
   }
 
   @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+  @DeleteMapping("/{rNum}")
+  public ResponseEntity<String> deleteReservation(@PathVariable String rNum) throws Exception {
+    reservationService.deleteReservationByRNum(rNum);
+    return ResponseEntity.ok("Reservation with rNum " + rNum + " deleted successfully");
+  }
+
+  @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
   @PutMapping("/cancel/{rNum}")
   public ResponseEntity<String> cancelReservation(@PathVariable String rNum) throws Exception {
     reservationService.cancelReservation(rNum);
