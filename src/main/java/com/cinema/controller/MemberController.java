@@ -3,13 +3,17 @@ package com.cinema.controller;
 import com.cinema.domain.Member;
 import com.cinema.dto.member.MemberJoinDTO;
 import com.cinema.service.MemberService;
+import com.cinema.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -54,5 +58,16 @@ public ResponseEntity<Page<Member>> getAllMembers(
     }
 }
 
+@GetMapping("/members")
+public ResponseEntity<Page<Member>> getMembers(@RequestParam(required = false) String condition,
+                                               Pageable pageable) throws Exception {
+        Page<Member> members;
+        if (condition != null && !condition.isEmpty()) {
+            members = memberService.findBySearchCondition(condition, pageable);
+        }else {
+            members = memberService.findAllMembers(pageable);
+        }
+        return ResponseEntity.ok(members);
+}
 
 }
