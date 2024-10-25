@@ -1,14 +1,14 @@
 package com.cinema.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
+import lombok.*;
 
 @Entity                             //해당 클래스가 JPA의 엔티티임을 나타냄
 @Table(name ="MOVIE_TBL")           //테이블명을 지정함
 @Builder
 @Getter
+@Setter
 @ToString
 @AllArgsConstructor                 //모든 필드를 인자로 받는 생성자를 자동으로 생성
 @NoArgsConstructor
