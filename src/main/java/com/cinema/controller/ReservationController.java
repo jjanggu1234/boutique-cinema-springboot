@@ -39,7 +39,7 @@ public class ReservationController {
     return ResponseEntity.ok(reservations);
   }
 
-  @PreAuthorize("hasAnyRole('ROLE_USER')")
+  @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
   @GetMapping("/member/{mId}")
   public ResponseEntity<List<ReservationDTO>> getReservationsByMember(
       @PathVariable("mId") String mId) throws Exception {
