@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +22,7 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     // 공지사항 등록
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping// POST 메소드 처리
     public ResponseEntity<Long> createNotice(@RequestBody NoticeDTO noticeDTO) {
         Long savedId = noticeService.register(noticeDTO); //공지사항 등록
@@ -74,6 +76,7 @@ public Page<NoticeDTO>getEarliestNotices(
 }
 
     // 공지사항 수정
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{nNum}")
     public ResponseEntity<Void> updateNotice(@PathVariable Long nNum, @RequestBody NoticeDTO noticeDTO) {
         noticeDTO.setNNum(nNum); // ID 설정
@@ -86,6 +89,7 @@ public Page<NoticeDTO>getEarliestNotices(
     }
 
     // 공지사항 삭제
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{nNum}")
     public ResponseEntity<Void> deleteNotice(@PathVariable Long nNum) {
         noticeService.delete(nNum);
