@@ -81,6 +81,10 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         if (path.matches("/api/admin/movie/[0-9]+") && method.equals("GET")) {
             return true;
         }
+
+        if (path.matches("/api/reservation/list") && method.equals("GET")) {
+            return true;
+        }
         return path.startsWith("/api/admin/notices/") ||
                 path.startsWith("/api/member/") ||
                 path.startsWith("/api/admin/movie/list") ||
