@@ -12,7 +12,7 @@ public interface NoticeRepository  extends JpaRepository<Notice, Long> {
      @Query("SELECT n FROM Notice n WHERE n.nTitle LIKE ?1")
      Page<Notice> findByNTitle(String title, Pageable pageable);
 
-     @Query("SELECT n FROM Notice n ORDER BY n.nDate DESC")
+     @Query("SELECT n FROM Notice n ORDER BY n.nNum DESC")
      Page<Notice> findLatestByDate(Pageable pageable);
 
       @Query("SELECT n FROM Notice n ORDER BY n.nDate ASC")
